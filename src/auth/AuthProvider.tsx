@@ -62,7 +62,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
     }
 
     function logoutCallback(): void {
-        log('login');
+        log('logout');
         setState({
             ...state,
             token: '',

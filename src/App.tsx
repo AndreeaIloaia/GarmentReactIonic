@@ -1,8 +1,7 @@
 import React from 'react';
 import {Redirect, Route} from 'react-router-dom';
-import {IonApp, IonIcon, IonLabel, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs} from '@ionic/react';
+import {IonApp, IonRouterOutlet} from '@ionic/react';
 import {IonReactRouter} from '@ionic/react-router';
-import Tab1 from './pages/Tab1';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -25,35 +24,23 @@ import './theme/variables.css';
 import {AuthProvider, Login, PrivateRoute} from "./auth";
 import {GarmentProvider} from "./todo/GarmentProvider";
 import {GarmentEdit, GarmentList} from "./todo";
-import {home, shirt} from "ionicons/icons";
+import Tab2 from "./pages/Tab2";
 
 const App: React.FC = () => (
     <IonApp>
         <IonReactRouter>
-            <IonTabs>
-                <IonRouterOutlet>
-                    <AuthProvider>
-                        <Route path="/login" component={Login} exact={true}/>
-                        <GarmentProvider>
-                            <PrivateRoute component={GarmentList} path="/garments" exact={true}/>
-                            <PrivateRoute component={GarmentEdit} path="/garment" exact={true}/>
-                            <PrivateRoute component={GarmentEdit} path="/garment/:id" exact={true}/>
-                            <PrivateRoute component={Tab1} path="/tab1" exact={true}/>
-                        </GarmentProvider>
-                        <Route exact path="/" render={() => <Redirect to="/garments"/>}/>
-                    </AuthProvider>
-                </IonRouterOutlet>
-                <IonTabBar slot="bottom">
-                    <IonTabButton tab="tab1" href="/tab1">
-                        <IonIcon icon={shirt} />
-                        <IonLabel>Pics</IonLabel>
-                    </IonTabButton>
-                    <IonTabButton tab="tab2" href="/garments">
-                        <IonIcon icon={home} />
-                        <IonLabel>Home</IonLabel>
-                    </IonTabButton>
-                </IonTabBar>
-            </IonTabs>
+            <IonRouterOutlet>
+                <AuthProvider>
+                    <Route path="/login" component={Login} exact={true}/>
+                    <GarmentProvider>
+                        <PrivateRoute component={GarmentList} path="/garments" exact={true}/>
+                        <PrivateRoute component={GarmentEdit} path="/garment" exact={true}/>
+                        <PrivateRoute component={GarmentEdit} path="/garment/:id" exact={true}/>
+                        <PrivateRoute component={Tab2} path="/tab2" exact={true}/>
+                    </GarmentProvider>
+                    <Route exact path="/" render={() => <Redirect to="/garments"/>}/>
+                </AuthProvider>
+            </IonRouterOutlet>
         </IonReactRouter>
     </IonApp>
 );

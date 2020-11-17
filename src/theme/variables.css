@@ -235,3 +235,8 @@ http://ionicframework.com/docs/theming/ */
   margin: 30px;
   font-size: large;
 }
+
+.ion-activatable {
+  margin: 5px;
+}
+

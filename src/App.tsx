@@ -2,6 +2,7 @@ import React from 'react';
 import {Redirect, Route} from 'react-router-dom';
 import {IonApp, IonIcon, IonLabel, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs} from '@ionic/react';
 import {IonReactRouter} from '@ionic/react-router';
+import Tab1 from './pages/Tab1';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -24,7 +25,7 @@ import './theme/variables.css';
 import {AuthProvider, Login, PrivateRoute} from "./auth";
 import {GarmentProvider} from "./todo/GarmentProvider";
 import {GarmentEdit, GarmentList} from "./todo";
-import {shirt} from "ionicons/icons";
+import {home, shirt} from "ionicons/icons";
 
 const App: React.FC = () => (
     <IonApp>
@@ -37,6 +38,7 @@ const App: React.FC = () => (
                             <PrivateRoute component={GarmentList} path="/garments" exact={true}/>
                             <PrivateRoute component={GarmentEdit} path="/garment" exact={true}/>
                             <PrivateRoute component={GarmentEdit} path="/garment/:id" exact={true}/>
+                            <PrivateRoute component={Tab1} path="/tab1" exact={true}/>
                         </GarmentProvider>
                         <Route exact path="/" render={() => <Redirect to="/garments"/>}/>
                     </AuthProvider>
@@ -45,6 +47,10 @@ const App: React.FC = () => (
                     <IonTabButton tab="tab1" href="/tab1">
                         <IonIcon icon={shirt} />
                         <IonLabel>Pics</IonLabel>
+                    </IonTabButton>
+                    <IonTabButton tab="tab2" href="/garments">
+                        <IonIcon icon={home} />
+                        <IonLabel>Home</IonLabel>
                     </IonTabButton>
                 </IonTabBar>
             </IonTabs>

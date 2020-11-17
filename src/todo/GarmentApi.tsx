@@ -34,6 +34,7 @@ export const getGarments: (token: string) => Promise<GarmentProps[]> = token => 
     return withLogs(res, 'getGarments');
 }
 
+
 export const createGarments: (token: string, garment: GarmentProps) => Promise<GarmentProps[]> = (token, garment) => {
     var res = axios.post(garmentUrl, garment, authConfig(token));
     res.then(async function (res) {
@@ -53,7 +54,7 @@ export const createGarments: (token: string, garment: GarmentProps) => Promise<G
     return withLogs(res, 'createGarments');
 }
 
-export const updateGarment: (token: string, recipe: GarmentProps) => Promise<GarmentProps[]> = (token, garment) => {
+export const updateGarment: (token: string, garment: GarmentProps) => Promise<GarmentProps[]> = (token, garment) => {
     var res = axios.put(`${garmentUrl}/${garment._id}`, garment, authConfig(token));
     res.then(async function (res) {
         if (garment._id)

@@ -31,7 +31,7 @@ const GarmentList: React.FC<RouteComponentProps> = ({history}) => {
 
     useEffect(() => {
         if(garments?.length)
-            setDisplayed(garments?.slice(0, 6));
+            setDisplayed(garments?.slice(0, 8));
     }, [garments]);
 
     useEffect(() => {
@@ -108,7 +108,7 @@ const GarmentList: React.FC<RouteComponentProps> = ({history}) => {
                     })}
                 </IonList>
                 <IonInfiniteScroll
-                    threshold="10px"
+                    threshold="15px"
                     disabled={disableInfiniteScroll}
                     onIonInfinite={(e: CustomEvent<void>) => {
                         searchNext(e);

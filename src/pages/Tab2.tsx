@@ -36,7 +36,7 @@ const Tab2: React.FC<RouteComponentProps> = ({history}) => {
             <IonContent fullscreen>
                 <IonSearchbar
                     value={searchName}
-                    debounce={1000}
+                    debounce={300}
                     onIonChange={e => setSearchName(e.detail.value!)
                     }>
                 </IonSearchbar>

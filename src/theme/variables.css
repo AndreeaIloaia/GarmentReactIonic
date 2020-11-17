@@ -230,3 +230,13 @@ http://ionicframework.com/docs/theming/ */
     --ion-card-background: #1e1e1e;
   }
 }
+
+.item {
+  margin: 30px;
+  font-size: large;
+}
+
+.ion-activatable {
+  margin: 5px;
+}
+

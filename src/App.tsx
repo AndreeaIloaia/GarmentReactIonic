@@ -1,8 +1,7 @@
 import React from 'react';
-import { Redirect, Route } from 'react-router-dom';
-import { IonApp, IonRouterOutlet } from '@ionic/react';
-import { IonReactRouter } from '@ionic/react-router';
-import Home from './pages/Home';
+import {Redirect, Route} from 'react-router-dom';
+import {IonApp, IonRouterOutlet} from '@ionic/react';
+import {IonReactRouter} from '@ionic/react-router';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -22,16 +21,28 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import {AuthProvider, Login, PrivateRoute} from "./auth";
+import {GarmentProvider} from "./todo/GarmentProvider";
+import {GarmentEdit, GarmentList} from "./todo";
+import Tab2 from "./pages/Tab2";
 
 const App: React.FC = () => (
-  <IonApp>
-    <IonReactRouter>
-      <IonRouterOutlet>
-        <Route path="/home" component={Home} exact={true} />
-        <Route exact path="/" render={() => <Redirect to="/home" />} />
-      </IonRouterOutlet>
-    </IonReactRouter>
-  </IonApp>
+    <IonApp>
+        <IonReactRouter>
+            <IonRouterOutlet>
+                <AuthProvider>
+                    <Route path="/login" component={Login} exact={true}/>
+                    <GarmentProvider>
+                        <PrivateRoute component={GarmentList} path="/garments" exact={true}/>
+                        <PrivateRoute component={GarmentEdit} path="/garment" exact={true}/>
+                        <PrivateRoute component={GarmentEdit} path="/garment/:id" exact={true}/>
+                        <PrivateRoute component={Tab2} path="/tab2" exact={true}/>
+                    </GarmentProvider>
+                    <Route exact path="/" render={() => <Redirect to="/garments"/>}/>
+                </AuthProvider>
+            </IonRouterOutlet>
+        </IonReactRouter>
+    </IonApp>
 );
 
 export default App;

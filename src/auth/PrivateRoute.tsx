@@ -21,7 +21,7 @@ export const PrivateRoute: React.FC<PrivateRouteProps> = ({component: Component,
                 // @ts-ignore
                 return <Component {...props} />;
             }
-            return <Redirect to={{pathname: '/login'}}/>
+            return <Redirect to={{ pathname: '/login' }}/>
         }}/>
     );
 }

@@ -21,7 +21,9 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
-import {AuthProvider, Login} from "./auth";
+import {AuthProvider, Login, PrivateRoute} from "./auth";
+import {GarmentProvider} from "./todo/GarmentProvider";
+import {GarmentEdit, GarmentList} from "./todo";
 
 const App: React.FC = () => (
   <IonApp>
@@ -29,7 +31,12 @@ const App: React.FC = () => (
           <IonRouterOutlet>
               <AuthProvider>
                   <Route path="/login" component={Login} exact={true}/>
-                  <Route exact path="/" render={() => <Redirect to="/"/>}/>
+                  <GarmentProvider>
+                      <PrivateRoute component={GarmentList} path="/garments" exact={true}/>
+                      <PrivateRoute component={GarmentEdit} path="/garment" exact={true}/>
+                      <PrivateRoute component={GarmentEdit} path="/garment/:id" exact={true}/>
+                  </GarmentProvider>
+                  <Route exact path="/" render={() => <Redirect to="/garments"/>}/>
               </AuthProvider>
           </IonRouterOutlet>
       </IonReactRouter>

@@ -18,6 +18,8 @@ import {GarmentContext} from "./GarmentProvider";
 import Garment from './Garment'
 import {AuthContext} from "../auth";
 import {GarmentProps} from "./GarmentProps";
+import {useNetwork} from "../core/UseNetState";
+import {useAppState} from "../core/UseAppStatus";
 
 const log = getLogger('GarmentList');
 
@@ -26,8 +28,20 @@ const GarmentList: React.FC<RouteComponentProps> = ({history}) => {
     const [disableInfiniteScroll, setDisableInfiniteScroll] = useState<boolean>(false);
     const [displayed, setDisplayed] = useState<GarmentProps[]>([]);
     const [filter, setFilter] = useState<string | undefined>(undefined);
-    const [position, setPosition] = useState(6);
+    const [position, setPosition] = useState(8);
     const { logout } = useContext(AuthContext);
+    const { networkStatus } = useNetwork();
+    const { appState } = useAppState();
+
+    let color, msg;
+    if(networkStatus.connected) {
+        color = 'primary';
+        msg = 'online';
+    }
+    else {
+        color = 'dark';
+        msg = 'offline';
+    }
 
     useEffect(() => {
         if(garments?.length)
@@ -60,19 +74,6 @@ const GarmentList: React.FC<RouteComponentProps> = ({history}) => {
         ($event.target as HTMLIonInfiniteScrollElement).complete();
     }
 
-    // async function filterGarment($event: CustomEvent<void>) {
-    //     if(garments) {
-    //         if(filter && filter.valueOf() !== "")
-    //             setDisplayed([...garments.filter(obj => obj.material === filter)]);
-    //         // else if(filter !== "no")
-    //         //     setDisplayed([...garments]);
-    //         else
-    //             setDisplayed([]);
-    //
-    //     }
-    //     ($event.target as HTMLIonInfiniteScrollElement).complete();
-    // }
-
     const handleLogout = () => {
         logout?.();
         return <Redirect to={{ pathname: "/login" }} />;
@@ -82,12 +83,18 @@ const GarmentList: React.FC<RouteComponentProps> = ({history}) => {
             <IonHeader>
                 <IonToolbar>
                     <IonTitle>My Tailor App</IonTitle>
+
                     <IonButton className="logout-button" onClick={handleLogout} slot="end" expand="block" fill="solid" color="primary">
                         Logout
                     </IonButton>
                 </IonToolbar>
+                <IonToolbar color={color}>
+                    <IonTitle>Network connection: {msg}</IonTitle>
+
+                </IonToolbar>
             </IonHeader>
             <IonContent>
+                <div>App state is {JSON.stringify(appState)}</div>
                 <IonLoading isOpen={fetching} message={"Fetching garments"}/>
                 <IonSelect value={filter} placeholder="Select Material" onIonChange={e => {
                         setFilter(e.detail.value);

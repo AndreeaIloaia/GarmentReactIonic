@@ -19,7 +19,6 @@ import Garment from './Garment'
 import {AuthContext} from "../auth";
 import {GarmentProps} from "./GarmentProps";
 import {useNetwork} from "../core/UseNetState";
-import {useAppState} from "../core/UseAppStatus";
 
 const log = getLogger('GarmentList');
 
@@ -28,10 +27,10 @@ const GarmentList: React.FC<RouteComponentProps> = ({history}) => {
     const [disableInfiniteScroll, setDisableInfiniteScroll] = useState<boolean>(false);
     const [displayed, setDisplayed] = useState<GarmentProps[]>([]);
     const [filter, setFilter] = useState<string | undefined>(undefined);
-    const [position, setPosition] = useState(8);
+    const [position, setPosition] = useState(11);
     const { logout } = useContext(AuthContext);
     const { networkStatus } = useNetwork();
-    const { appState } = useAppState();
+    const { connectionNetwork, offlineBehaviour, setOfflineBehaviour } = useContext(GarmentContext);
 
     let color, msg;
     if(networkStatus.connected) {
@@ -45,8 +44,8 @@ const GarmentList: React.FC<RouteComponentProps> = ({history}) => {
 
     useEffect(() => {
         if(garments?.length)
-            setDisplayed(garments?.slice(0, 8));
-    }, [garments]);
+            setDisplayed(garments?.slice(0, 11));
+    }, [garments, connectionNetwork]);
 
     useEffect(() => {
         if(garments && filter) {
@@ -58,7 +57,8 @@ const GarmentList: React.FC<RouteComponentProps> = ({history}) => {
                 setDisplayed(garments?.slice(0, 6));
         }
     // }, [filter, displayed]);
-    }, [filter]);
+    // }, [filter]);
+    }, [filter, garments]);
     log('render');
 
     async function searchNext($event: CustomEvent<void>) {
@@ -94,7 +94,7 @@ const GarmentList: React.FC<RouteComponentProps> = ({history}) => {
                 </IonToolbar>
             </IonHeader>
             <IonContent>
-                <div>App state is {JSON.stringify(appState)}</div>
+                {/*<div>App state is {JSON.stringify(appState)}</div>*/}
                 <IonLoading isOpen={fetching} message={"Fetching garments"}/>
                 <IonSelect value={filter} placeholder="Select Material" onIonChange={e => {
                         setFilter(e.detail.value);

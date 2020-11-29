@@ -46,7 +46,7 @@ const GarmentEdit: React.FC<GarmentEditProps> = ({ history, match }) => {
 
     const handleSave = () => {
         const editedGer = garment ? {...garment, name, material, inaltime, latime, descriere} : {name, material, inaltime, latime, descriere};
-        saveGarment && saveGarment(editedGer).then(() => history.goBack());
+        saveGarment && saveGarment(editedGer).then(() => history.push('/garments'));
     };
     log('render');
     return (
@@ -60,6 +60,14 @@ const GarmentEdit: React.FC<GarmentEditProps> = ({ history, match }) => {
                 </IonToolbar>
             </IonHeader>
             <IonContent>
+                {/*<IonItem className="ion-text-wrap">*/}
+                {/*    <IonLabel className="labels">id</IonLabel>*/}
+                {/*    <IonInput class="inputs" placeholder="ID" value={garment?._id} onIonChange={e => setText(e.detail.value || '')}/>*/}
+                {/*</IonItem>*/}
+                {/*<IonItem className="ion-text-wrap">*/}
+                {/*    <IonLabel className="labels">id</IonLabel>*/}
+                {/*    <IonInput class="inputs" placeholder="ID" value={match.params.id} onIonChange={e => setText(e.detail.value || '')}/>*/}
+                {/*</IonItem>*/}
                 <IonItem className="ion-text-wrap">
                     <IonLabel className="labels">Nume item vestimentar</IonLabel>
                     <IonInput class="inputs" placeholder="Nume" value={name} onIonChange={e => setText(e.detail.value || '')}/>

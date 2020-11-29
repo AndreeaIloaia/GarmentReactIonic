@@ -23,7 +23,8 @@ const Tab2: React.FC<RouteComponentProps> = ({history}) => {
         if (garments?.length) {
             setDisplayed(garments.filter(obj => obj.name.indexOf(searchName) >= 0));
         }
-    }, [searchName]);
+    // }, [searchName]);
+    }, [searchName, garments]);
 
 
     return (

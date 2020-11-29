@@ -1,9 +1,12 @@
 import {getLogger} from "../core";
 import {GarmentProps} from "./GarmentProps";
-import React, {useCallback, useContext, useEffect, useReducer} from "react";
+import React, {useCallback, useContext, useEffect, useReducer, useState} from "react";
 import PropTypes from 'prop-types';
 import {createGarments, getGarments, newWebSocket, updateGarment} from "./GarmentApi";
 import {AuthContext} from "../auth";
+import {Plugins} from "@capacitor/core";
+import {useNetwork} from "../core/UseNetState";
+const {Network} = Plugins
 
 const FETCH_GARMENTS_STARTED = 'FETCH_GARMENTS_STARTED';
 const FETCH_GARMENTS_SUCCEEDED = 'FETCH_GARMENTS_SUCCEEDED';
@@ -15,6 +18,7 @@ const SAVE_GARMENTS_FAILED = 'SAVE_GARMENTS_FAILED';
 const log = getLogger('GarmentProvider');
 
 type SaveGarmentFn = (garment: GarmentProps) => Promise<any>;
+// type SetOfflineBehaviourFn = (garment: GarmentProps) => Promise<any>;
 
 export interface GarmentState {
     garments?: GarmentProps[],
@@ -23,6 +27,9 @@ export interface GarmentState {
     saving: boolean,
     savingError?: Error | null,
     saveGarment?: SaveGarmentFn,
+    connectionNetwork: boolean | undefined,
+    offlineBehaviour: boolean,
+    setOfflineBehaviour: Function
 }
 
 interface ActionProps {
@@ -33,6 +40,9 @@ interface ActionProps {
 const initialState: GarmentState = {
     fetching: false,
     saving: false,
+    connectionNetwork: true,
+    offlineBehaviour: false,
+    setOfflineBehaviour: () => {}
 }
 
 const reducer: (state: GarmentState, action: ActionProps) => GarmentState =
@@ -73,10 +83,22 @@ export const GarmentProvider: React.FC<GarmentProviderProps> = ({children}) => {
     const { token } = useContext(AuthContext);
     const [state, dispatch] = useReducer(reducer, initialState);
     const {garments, fetching, fetchingError, saving, savingError} = state;
-    useEffect(getGarmentsEffect, [token]);
-    useEffect(wsEffect, [token]);
-    const saveGarment = useCallback<SaveGarmentFn>(saveGarmentCallback, [token]);
-    const value = {garments, fetching, fetchingError, saving, savingError, saveGarment};
+
+    //const [ connectionNetwork, setConnectionNetwork ] = useState<boolean>();
+    //Network.getStatus().then(status => setConnectionNetwork(status.connected));
+    const { networkStatus } = useNetwork();
+    // setConnectionNetwork(networkStatus.connected);
+
+    const [ offlineBehaviour, setOfflineBehaviour ] = useState<boolean>(false);
+
+    useEffect(getGarmentsEffect, [token, networkStatus.connected]);
+    useEffect(wsEffect, [token, networkStatus.connected]);
+    useEffect(networkEffect, [token]);
+
+    const connectionNetwork = networkStatus.connected;
+    const saveGarment = useCallback<SaveGarmentFn>(saveGarmentCallback, [token, networkStatus.connected, setOfflineBehaviour]);
+    const value = { garments, fetching, fetchingError, saving, savingError, saveGarment, connectionNetwork, offlineBehaviour, setOfflineBehaviour };
+
     log('returns');
     return (
         <GarmentContext.Provider value={value}>
@@ -98,10 +120,13 @@ export const GarmentProvider: React.FC<GarmentProviderProps> = ({children}) => {
             try {
                 log('fetchGarments started');
                 dispatch({type: FETCH_GARMENTS_STARTED});
-                const garments = await getGarments(token);
+                log("CONNECTION2: " + connectionNetwork);
+                const garments = await getGarments(token, connectionNetwork);
                 log('fetchingGarments succeede');
-                if (!canceled)
+                if (!canceled) {
+                    //addGarmentsToLocalStorage(garments);
                     dispatch({type: FETCH_GARMENTS_SUCCEEDED, payload: {garments}});
+                }
             } catch (error) {
                 log('fetchGarments failed');
                 dispatch({type: FETCH_GARMENTS_FAILED, payload: {error}});
@@ -113,9 +138,12 @@ export const GarmentProvider: React.FC<GarmentProviderProps> = ({children}) => {
         try {
         log('saveGarments started');
         dispatch({type: SAVE_GARMENTS_STARTED});
-        const savedGarment = await (garment._id ? updateGarment(token, garment) : createGarments(token, garment));
+        log("ID:" + garment._id);
+        const savedGarment = await (garment._id ? updateGarment(token, garment, connectionNetwork) : createGarments(token, garment, connectionNetwork));
         log('saveGarments succeeded');
         dispatch({type: SAVE_GARMENTS_SUCCEEDED, payload: {garment: savedGarment}});
+        if(!connectionNetwork)
+            setOfflineBehaviour(true);
         } catch (error) {
             log('saveGarment failed');
             dispatch({type: SAVE_GARMENTS_FAILED, payload: {error}});
@@ -123,6 +151,9 @@ export const GarmentProvider: React.FC<GarmentProviderProps> = ({children}) => {
     }
 
     function wsEffect() {
+        if(!connectionNetwork)
+            return;
+
         let canceled = false;
         log('wsEffect - connecting');
         let closeWebSocket: () => void;
@@ -142,5 +173,24 @@ export const GarmentProvider: React.FC<GarmentProviderProps> = ({children}) => {
             canceled = true;
             closeWebSocket?.();
         }
+    }
+
+    function networkEffect() {
+        let canceled = false;
+        Network.addListener('networkStatusChange', async (status) => {
+            if (canceled) {
+                return;
+            }
+            const connected: boolean = status.connected;
+            if (connected) {
+                // const conflicts = await syncData(token);
+                // setConflictGuitars(conflicts);
+            }
+            //setConnectionNetwork(connected);
+            console.log("Network status changed", status);
+        });
+        return () => {
+            canceled = true;
+        };
     }
 };

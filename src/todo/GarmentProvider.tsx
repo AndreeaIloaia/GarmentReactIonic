@@ -241,21 +241,18 @@ export const GarmentProvider: React.FC<GarmentProviderProps> = ({children}) => {
             log('saveGarment failed - use localStorage');
             // dispatch({type: SAVE_GARMENTS_FAILED, payload: {error}});
             if (garment._id) {
-                msg = "Garment updated locally"
-                // alert("Garment updated locally");
+                //msg = "Garment updated locally"
                 garment.status = msg;
-                await Storage.set({
-                    key: `garment${garment._id}`,
-                    value: JSON.stringify(garment)
-                });
+                // await Storage.set({
+                //     key: `garment${garment._id}`,
+                //     value: JSON.stringify(garment)
+                // });
             } else {
                 msg = "Garment added locally";
-                // alert("Garment added locally");
                 garment.status = msg;
 
                 //generate an id
                 var id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-                // alert(id);
                 garment._id = id;
                 await Storage.set({
                     key: `garment${id}`,

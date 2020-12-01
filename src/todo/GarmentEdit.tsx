@@ -31,6 +31,7 @@ const GarmentEdit: React.FC<GarmentEditProps> = ({ history, match }) => {
     const [inaltime, setInaltime] = useState('');
     const [latime, setLatime] = useState('');
     const [descriere, setDescriere] = useState('');
+    const [otherDevice, setDevice] = useState(false);
     // const [status, setStatus] = useState('');
     const [garment, setGarment] = useState<GarmentProps>();
     // const [garmentNew, setGarmentNew] = useState<GarmentProps>();

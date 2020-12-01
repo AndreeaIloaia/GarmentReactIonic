@@ -36,39 +36,6 @@ export const createGarments: (token: string, garment: GarmentProps) => Promise<G
 
 
 export const updateGarment: (token: string, garment: GarmentProps) => Promise<GarmentProps[]> = (token, garment) => {
-    // return Network.getStatus()
-    //     .then(status => {
-    //         if (status.connected) {
-    //             var res = axios.put(`${garmentUrl}/${garment._id}`, garment, authConfig(token));
-    //             log("AICIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII")
-    //             res.then(async function (res) {
-    //                 if (garment._id)
-    //                     await Storage.set({
-    //                         key: garment._id,
-    //                         value: JSON.stringify({
-    //                             id: garment._id,
-    //                             name: garment.name,
-    //                             material: garment.material,
-    //                             inaltime: garment.inaltime,
-    //                             latime: garment.latime,
-    //                             descriere: garment.descriere,
-    //                         }),
-    //                     });
-    //             });
-    //             return withLogs(res, 'updateGarment');
-    //         }
-    //         return Storage.set({
-    //             key: 'user',
-    //             value: JSON.stringify({
-    //                 id: garment._id,
-    //                 name: garment.name,
-    //                 material: garment.material,
-    //                 inaltime: garment.inaltime,
-    //                 latime: garment.latime,
-    //                 descriere: garment.descriere,
-    //             }),
-    //         });
-    //     });
     var res = axios.put(`${garmentUrl}/${garment._id}`, garment, authConfig(token));
     res
         .then(async function (res) {

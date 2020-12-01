@@ -1,11 +1,11 @@
 import {getLogger} from "../core";
 import {GarmentProps} from "./GarmentProps";
-import React, {useCallback, useContext, useEffect, useReducer, useState} from "react";
+import React, {useCallback, useContext, useEffect, useReducer} from "react";
 import PropTypes from 'prop-types';
 import {createGarments, getGarments, newWebSocket, updateGarment} from "./GarmentApi";
 import {AuthContext} from "../auth";
 import {Plugins} from "@capacitor/core";
-import {useNetwork} from "../core/UseNetState";
+// import {useNetwork} from "../core/UseNetState";
 
 const {Storage} = Plugins
 
@@ -20,7 +20,7 @@ const SAVE_GARMENTS_FAILED = 'SAVE_GARMENTS_FAILED';
 
 const log = getLogger('GarmentProvider');
 
-type SaveGarmentFn = (garment: GarmentProps) => Promise<any>;
+type SaveGarmentFn = (garment: GarmentProps, connected: boolean) => Promise<any>;
 type RefreshFn = () => Promise<any>;
 
 // type SetOfflineBehaviourFn = (garment: GarmentProps) => Promise<any>;
@@ -33,8 +33,6 @@ export interface GarmentState {
     savingError?: Error | null,
     saveGarment?: SaveGarmentFn,
     deleting: boolean,
-    connectionNetwork: boolean | undefined,
-    offlineBehaviour: boolean,
     refresh?: RefreshFn
 }
 
@@ -47,8 +45,6 @@ const initialState: GarmentState = {
     fetching: false,
     saving: false,
     deleting: false,
-    connectionNetwork: true,
-    offlineBehaviour: false,
 }
 
 const reducer: (state: GarmentState, action: ActionProps) => GarmentState =
@@ -84,6 +80,13 @@ const reducer: (state: GarmentState, action: ActionProps) => GarmentState =
                 log("INDEX2: " + index2);
                 garments2.splice(index2, 1);
                 return {...state, garments2, deleting: false};
+            // case DELETE_ITEM_SUCCEEDED: {
+            //     const items = [...(state.garments || [])];
+            //     const item = payload.item;
+            //     const index = items.findIndex((it) => it._id === item._id);
+            //     items.splice(index, 1);
+            //     return { ...state, items, deleting: false };
+            // }
             default:
                 return state;
         }
@@ -100,19 +103,15 @@ export const GarmentProvider: React.FC<GarmentProviderProps> = ({children}) => {
     const [state, dispatch] = useReducer(reducer, initialState);
     const {garments, fetching, fetchingError, saving, savingError, deleting} = state;
 
-    //const [ connectionNetwork, setConnectionNetwork ] = useState<boolean>();
-    //Network.getStatus().then(status => setConnectionNetwork(status.connected));
-    const {networkStatus} = useNetwork();
-    // setConnectionNetwork(networkStatus.connected);
+    //const {networkStatus} = useNetwork();
 
-    const [offlineBehaviour, setOfflineBehaviour] = useState<boolean>(false);
     useEffect(getGarmentsEffect, [token]);
     useEffect(wsEffect, [token]);
-    // useEffect(networkEffect, [token]);
 
-    const connectionNetwork = networkStatus.connected;
+    //const connectionNetwork = networkStatus.connected;
     const saveGarment = useCallback<SaveGarmentFn>(saveGarmentCallback, [token]);
     const refresh = useCallback<RefreshFn>(refreshCallback, [token]);
+
     const value = {
         garments,
         fetching,
@@ -121,12 +120,10 @@ export const GarmentProvider: React.FC<GarmentProviderProps> = ({children}) => {
         savingError,
         saveGarment,
         deleting,
-        connectionNetwork,
-        offlineBehaviour,
-        refresh
+        refresh,
     };
 
-    var msg = '';
+    let msg = '';
 
     log('returns');
     return (
@@ -136,6 +133,7 @@ export const GarmentProvider: React.FC<GarmentProviderProps> = ({children}) => {
     );
 
     async function refreshCallback() {
+        log("REFRESH");
         const myKeys = Storage.keys();
         let localGarments = await myKeys.then(function (myKeys) {
             const arr = [];
@@ -156,29 +154,31 @@ export const GarmentProvider: React.FC<GarmentProviderProps> = ({children}) => {
             const garment = await prm.then(function (res) {
                 return JSON.parse(res.value!);
             });
-            log("GARMENT: " + garment.name + " " + garment.status + "CONNECTION: " + connectionNetwork);
-            if (garment.status || garment.status === "") {
-                log(garment._id);
-                dispatch({type: DELETE_GARMENT_SUCCEEDED, payload: {garmentID: garment._id}});
+            if (garment !== null) {
+                if (garment.status !== 'empty') {
+                    log(garment._id);
+                    dispatch({type: DELETE_GARMENT_SUCCEEDED, payload: {garmentID: garment._id}});
 
-                log('Refresh list with local data');
-                await Storage.remove({key: `garment${garment._id}`});
+                    log('Refresh list with local data');
+                    await Storage.remove({key: `garment${garment._id}`});
 
-                const old = garment;
-                old.status = undefined;
-                delete old._id;
-                const newOne = await createGarments(token, old);
+                    const old = garment;
+                    old.status = 'empty';
+                    delete old._id;
+                    const newOne = await createGarments(token, old);
 
-                dispatch({type: SAVE_GARMENTS_SUCCEEDED, payload: {garment: newOne}});
+                    dispatch({type: SAVE_GARMENTS_SUCCEEDED, payload: {garment: newOne}});
 
-                await Storage.set({
-                    key: `garment${newOne._id}`,
-                    value: JSON.stringify(newOne)
-                })
-                log("GARMENT: " + newOne.name + " " + newOne.status);
+                    await Storage.set({
+                        key: `garment${newOne._id}`,
+                        value: JSON.stringify(newOne)
+                    })
+                    log("GARMENT: " + newOne.name + " " + newOne.status);
+                } else {
+                    //TODO - pt update
+                }
             }
         }
-
     }
 
 
@@ -196,7 +196,6 @@ export const GarmentProvider: React.FC<GarmentProviderProps> = ({children}) => {
             try {
                 log('fetchGarments started');
                 dispatch({type: FETCH_GARMENTS_STARTED});
-                log("CONNECTION2: " + connectionNetwork);
                 const garments = await getGarments(token);
                 log('fetchingGarments succeede');
                 if (!canceled) {
@@ -227,22 +226,24 @@ export const GarmentProvider: React.FC<GarmentProviderProps> = ({children}) => {
         }
     }
 
-    async function saveGarmentCallback(garment: GarmentProps) {
+    async function saveGarmentCallback(garment: GarmentProps, connection: boolean) {
         try {
+            if (!connection)
+                throw new Error();
+
             log('saveGarments started');
             dispatch({type: SAVE_GARMENTS_STARTED});
             log("ID:" + garment._id);
             const savedGarment = await (garment._id ? updateGarment(token, garment) : createGarments(token, garment));
             log('saveGarments succeeded');
             dispatch({type: SAVE_GARMENTS_SUCCEEDED, payload: {garment: savedGarment}});
-            if (!connectionNetwork)
-                log(connectionNetwork);
         } catch (error) {
             log('saveGarment failed - use localStorage');
             // dispatch({type: SAVE_GARMENTS_FAILED, payload: {error}});
             if (garment._id) {
                 msg = "Garment updated locally"
                 // alert("Garment updated locally");
+                garment.status = msg;
                 await Storage.set({
                     key: `garment${garment._id}`,
                     value: JSON.stringify(garment)
@@ -250,6 +251,7 @@ export const GarmentProvider: React.FC<GarmentProviderProps> = ({children}) => {
             } else {
                 msg = "Garment added locally";
                 // alert("Garment added locally");
+                garment.status = msg;
 
                 //generate an id
                 var id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
@@ -267,8 +269,6 @@ export const GarmentProvider: React.FC<GarmentProviderProps> = ({children}) => {
     }
 
     function wsEffect() {
-        if (!connectionNetwork)
-            return;
 
         let canceled = false;
         log('wsEffect - connecting');

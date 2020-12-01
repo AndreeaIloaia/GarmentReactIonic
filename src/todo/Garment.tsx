@@ -11,7 +11,7 @@ const Garment: React.FC<GarmentPropsExt> = ({_id, name, material, inaltime, lati
         <IonItem onClick={() => onEdit(_id)}>
             <IonLabel>{name}</IonLabel>
             <IonLabel color="primary" slot="end">
-                <small>{status}</small>
+                {status !== "empty" && (<small>{status}</small>)}
             </IonLabel>
         </IonItem>
     );

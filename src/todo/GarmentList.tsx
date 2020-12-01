@@ -19,7 +19,6 @@ import Garment from './Garment'
 import {AuthContext} from "../auth";
 import {GarmentProps} from "./GarmentProps";
 import {useNetwork} from "../core/UseNetState";
-import {useBackgroundTask} from "../core/UseBackgroundTask";
 
 const log = getLogger('GarmentList');
 
@@ -33,17 +32,17 @@ const GarmentList: React.FC<RouteComponentProps> = ({history}) => {
     const {networkStatus} = useNetwork();
 
 
-    let color, msg;
+    let color;
     if (networkStatus.connected) {
         color = 'primary';
-        msg = 'online';
+        // msg = 'online';
     } else {
         color = 'dark';
-        msg = 'offline';
+        // msg = 'offline';
     }
 
     useEffect(() => {
-        log("AICI " + networkStatus.connected);
+        log("AICI GARMENT LIST CONNECTION: " + networkStatus.connected);
         if (networkStatus.connected) {
             refresh && refresh();
         }

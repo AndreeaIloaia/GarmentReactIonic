@@ -23,15 +23,19 @@ interface GarmentEditProps extends RouteComponentProps<{
 }> {}
 
 const GarmentEdit: React.FC<GarmentEditProps> = ({ history, match }) => {
-    const {garments, saving, savingError, saveGarment} = useContext(GarmentContext);
+    const {garments, saving, savingError, saveGarment
+        // deleteGarment, getGarmentSrv, firstGarment
+    } = useContext(GarmentContext);
     const [name, setText] = useState('');
     const [material, setMaterial] = useState('');
     const [inaltime, setInaltime] = useState('');
     const [latime, setLatime] = useState('');
     const [descriere, setDescriere] = useState('');
-    const [status, setStatus] = useState('');
+    // const [status, setStatus] = useState('');
     const [garment, setGarment] = useState<GarmentProps>();
+    // const [garmentNew, setGarmentNew] = useState<GarmentProps>();
 
+    const { networkStatus } = useNetwork();
 
     useEffect(() => {
         log('useEffect');
@@ -44,14 +48,21 @@ const GarmentEdit: React.FC<GarmentEditProps> = ({ history, match }) => {
             setInaltime(garment.inaltime);
             setLatime(garment.latime);
             setDescriere(garment.descriere);
-            setStatus(garment.status);
+            // setStatus(garment.status);
         }
     }, [match.params.id, garments]);
+    // }, [match.params.id, garments, getGarmentSrv]);
+
+    // useEffect(() => {
+    //     setGarmentNew(firstGarment);
+    // }, [firstGarment]);
+
 
     const handleSave = () => {
-        const editedGer = garment ? {...garment, name, material, inaltime, latime, descriere, status} : {name, material, inaltime, latime, descriere, status};
-        saveGarment && saveGarment(editedGer).then(() => history.push('/garments'));
+        const editedGer = garment ? {...garment, name, material, inaltime, latime, descriere, status:"empty"} : {name, material, inaltime, latime, descriere, status: "empty"};
+        saveGarment && saveGarment(editedGer, networkStatus.connected).then(() => history.push('/garments'));
     };
+
     log('render');
     return (
         <IonPage>

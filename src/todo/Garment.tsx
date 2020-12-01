@@ -6,12 +6,15 @@ interface GarmentPropsExt extends GarmentProps {
     onEdit: (_id?: string) => void;
 }
 
-const Garment: React.FC<GarmentPropsExt> = ({_id, name, material, inaltime, latime, descriere, onEdit}) => {
-  return (
-      <IonItem onClick={() => onEdit(_id)}>
-          <IonLabel>{name}</IonLabel>
-      </IonItem>
-  );
+const Garment: React.FC<GarmentPropsExt> = ({_id, name, material, inaltime, latime, descriere, status, onEdit}) => {
+    return (
+        <IonItem onClick={() => onEdit(_id)}>
+            <IonLabel>{name}</IonLabel>
+            <IonLabel color="primary" slot="end">
+                <small>{status}</small>
+            </IonLabel>
+        </IonItem>
+    );
 };
 
 export default Garment;

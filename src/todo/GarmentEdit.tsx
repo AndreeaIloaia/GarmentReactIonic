@@ -14,6 +14,7 @@ import {
 } from '@ionic/react';
 import {GarmentContext} from "./GarmentProvider";
 import {GarmentProps} from "./GarmentProps";
+import {useNetwork} from "../core/UseNetState";
 
 const log = getLogger('GarmentEdit');
 
@@ -28,7 +29,9 @@ const GarmentEdit: React.FC<GarmentEditProps> = ({ history, match }) => {
     const [inaltime, setInaltime] = useState('');
     const [latime, setLatime] = useState('');
     const [descriere, setDescriere] = useState('');
+    const [status, setStatus] = useState('');
     const [garment, setGarment] = useState<GarmentProps>();
+
 
     useEffect(() => {
         log('useEffect');
@@ -41,11 +44,12 @@ const GarmentEdit: React.FC<GarmentEditProps> = ({ history, match }) => {
             setInaltime(garment.inaltime);
             setLatime(garment.latime);
             setDescriere(garment.descriere);
+            setStatus(garment.status);
         }
     }, [match.params.id, garments]);
 
     const handleSave = () => {
-        const editedGer = garment ? {...garment, name, material, inaltime, latime, descriere} : {name, material, inaltime, latime, descriere};
+        const editedGer = garment ? {...garment, name, material, inaltime, latime, descriere, status} : {name, material, inaltime, latime, descriere, status};
         saveGarment && saveGarment(editedGer).then(() => history.push('/garments'));
     };
     log('render');

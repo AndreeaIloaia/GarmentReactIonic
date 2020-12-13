@@ -25,6 +25,7 @@ import {AuthProvider, Login, PrivateRoute} from "./auth";
 import {GarmentProvider} from "./todo/GarmentProvider";
 import {GarmentEdit, GarmentList} from "./todo";
 import Tab2 from "./pages/Tab2";
+import ManageConflict from "./core/ManageConflict";
 
 const App: React.FC = () => (
     <IonApp>
@@ -33,6 +34,7 @@ const App: React.FC = () => (
                 <AuthProvider>
                     <Route path="/login" component={Login} exact={true}/>
                     <GarmentProvider>
+                        <PrivateRoute path="/conflict" component={ManageConflict}/>
                         <PrivateRoute component={GarmentList} path="/garments" exact={true}/>
                         <PrivateRoute component={GarmentEdit} path="/garment" exact={true}/>
                         <PrivateRoute component={GarmentEdit} path="/garment/:id" exact={true}/>

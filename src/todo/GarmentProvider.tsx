@@ -33,7 +33,9 @@ export interface GarmentState {
     savingError?: Error | null,
     saveGarment?: SaveGarmentFn,
     deleting: boolean,
-    refresh?: RefreshFn
+    refresh?: RefreshFn,
+    conflict?: GarmentProps[],
+    setConflict?: Function,
 }
 
 interface ActionProps {
@@ -79,7 +81,7 @@ const reducer: (state: GarmentState, action: ActionProps) => GarmentState =
                 const index2 = garments2.findIndex((i => i._id === garmentId));
                 log("INDEX2: " + index2);
                 garments2.splice(index2, 1);
-                return {...state, garments2, deleting: false};
+                return {...state, garments: garments2, deleting: false};
             // case DELETE_ITEM_SUCCEEDED: {
             //     const items = [...(state.garments || [])];
             //     const item = payload.item;

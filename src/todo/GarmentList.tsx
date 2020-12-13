@@ -28,9 +28,18 @@ const GarmentList: React.FC<RouteComponentProps> = ({history}) => {
     const [displayed, setDisplayed] = useState<GarmentProps[]>([]);
     const [filter, setFilter] = useState<string | undefined>(undefined);
     const [position, setPosition] = useState(11);
-    const {logout} = useContext(AuthContext);
-    const {networkStatus} = useNetwork();
 
+    const { conflict } = useContext(GarmentContext);
+    const { logout } = useContext(AuthContext);
+    const { networkStatus } = useNetwork();
+
+    useEffect(conflictEffect, [conflict]);
+
+    function conflictEffect() {
+        if(conflict && conflict.length > 0) {
+            history.push('/conflict');
+        }
+    }
 
     let color;
     if (networkStatus.connected) {

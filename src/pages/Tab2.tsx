@@ -23,7 +23,8 @@ const Tab2: React.FC<RouteComponentProps> = ({history}) => {
         if (garments?.length) {
             setDisplayed(garments.filter(obj => obj.name.indexOf(searchName) >= 0));
         }
-    }, [searchName]);
+    // }, [searchName]);
+    }, [searchName, garments]);
 
 
     return (
@@ -41,10 +42,10 @@ const Tab2: React.FC<RouteComponentProps> = ({history}) => {
                     }>
                 </IonSearchbar>
                 <IonList>
-                    {displayed.map(({_id, name, material, inaltime, latime, descriere}) => {
+                    {displayed.map(({_id, name, material, inaltime, latime, descriere, status}) => {
                         return (
                             <Garment key={_id} _id={_id} name={name} material={material} inaltime={inaltime}
-                                     latime={latime} descriere={descriere} onEdit={id => {}}/>
+                                     latime={latime} descriere={descriere} status={status} onEdit={id => {}}/>
                         );
                     })}
                 </IonList>

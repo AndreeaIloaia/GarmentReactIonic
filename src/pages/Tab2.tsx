@@ -41,10 +41,11 @@ const Tab2: React.FC<RouteComponentProps> = ({history}) => {
                     }>
                 </IonSearchbar>
                 <IonList>
-                    {displayed.map(({_id, name, material, inaltime, latime, descriere}) => {
+                    {displayed.map(({_id, name, material, inaltime, latime, descriere, longitudine, latitudine, photo}) => {
                         return (
                             <Garment key={_id} _id={_id} name={name} material={material} inaltime={inaltime}
-                                     latime={latime} descriere={descriere} onEdit={id => {}}/>
+                                     latime={latime} descriere={descriere} longitudine={longitudine} latitudine={latitudine}
+                                     photo={photo} onEdit={id => {}}/>
                         );
                     })}
                 </IonList>

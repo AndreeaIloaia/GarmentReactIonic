@@ -31,6 +31,9 @@ export const getGarments: (token: string) => Promise<GarmentProps[]> = token => 
                                     inaltime: garment.inaltime,
                                     latime: garment.latime,
                                     descriere: garment.descriere,
+                                    longitudine: garment.longitudine,
+                                    latitudine: garment.latitudine,
+                                    photo: garment.photo,
                                 }),
                             });
                     });
@@ -57,6 +60,9 @@ export const createGarments: (token: string, garment: GarmentProps) => Promise<G
                                 inaltime: garment.inaltime,
                                 latime: garment.latime,
                                 descriere: garment.descriere,
+                                longitudine: garment.longitudine,
+                                latitudine: garment.latitudine,
+                                photo: garment.photo,
                             }),
                         });
                 });
@@ -71,6 +77,9 @@ export const createGarments: (token: string, garment: GarmentProps) => Promise<G
                     inaltime: garment.inaltime,
                     latime: garment.latime,
                     descriere: garment.descriere,
+                    longitudine: garment.longitudine,
+                    latitudine: garment.latitudine,
+                    photo: garment.photo,
                 }),
             });
         })
@@ -92,6 +101,9 @@ export const updateGarment: (token: string, garment: GarmentProps) => Promise<Ga
                                 inaltime: garment.inaltime,
                                 latime: garment.latime,
                                 descriere: garment.descriere,
+                                longitudine: garment.longitudine,
+                                latitudine: garment.latitudine,
+                                photo: garment.photo,
                             }),
                         });
                 });
@@ -106,6 +118,9 @@ export const updateGarment: (token: string, garment: GarmentProps) => Promise<Ga
                     inaltime: garment.inaltime,
                     latime: garment.latime,
                     descriere: garment.descriere,
+                    longitudine: garment.longitudine,
+                    latitudine: garment.latitudine,
+                    photo: garment.photo,
                 }),
             });
         });

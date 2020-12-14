@@ -12,7 +12,7 @@ import {
     IonTitle,
     IonToolbar
 } from '@ionic/react';
-import {add, shirt} from 'ionicons/icons';
+import {add, locate, shirt} from 'ionicons/icons';
 import {getLogger} from '../core';
 import {GarmentContext} from "./GarmentProvider";
 import Garment from './Garment'
@@ -94,7 +94,6 @@ const GarmentList: React.FC<RouteComponentProps> = ({history}) => {
                 </IonToolbar>
             </IonHeader>
             <IonContent>
-                <div>App state is {JSON.stringify(appState)}</div>
                 <IonLoading isOpen={fetching} message={"Fetching garments"}/>
                 <IonSelect value={filter} placeholder="Select Material" onIonChange={e => {
                         setFilter(e.detail.value);
@@ -106,11 +105,11 @@ const GarmentList: React.FC<RouteComponentProps> = ({history}) => {
                     <IonSelectOption value="undefined" >no filter</IonSelectOption>
                 </IonSelect>
                 <IonList>
-                    {displayed && displayed.map(({_id, name, material, inaltime, latime, descriere}) =>{
+                    {displayed && displayed.map(({_id, name, material, inaltime, latime, descriere, longitudine, latitudine, photo}) =>{
                         return (
                             <Garment key={_id} _id={_id} name={name} material={material} inaltime={inaltime}
-                                     latime={latime} descriere={descriere}
-                                     onEdit={id => history.push(`/garment/${id}`)}/>
+                                     latime={latime} descriere={descriere} longitudine={longitudine} latitudine={latitudine}
+                                     photo={photo} onEdit={id => history.push(`/garment/${id}`)}/>
                         );
                     })}
                 </IonList>
@@ -129,6 +128,9 @@ const GarmentList: React.FC<RouteComponentProps> = ({history}) => {
                     </IonFabButton>
                     <IonFabButton onClick={() => history.push('/tab2')}>
                         <IonIcon icon={shirt}/>
+                    </IonFabButton>
+                    <IonFabButton onClick={() => history.push('/tab3')}>
+                        <IonIcon icon={locate}/>
                     </IonFabButton>
                 </IonFab>
 

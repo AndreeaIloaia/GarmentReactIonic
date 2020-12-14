@@ -1,0 +1,329 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="io.ionic.starter"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="23"
+8-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml
+9        android:targetSdkVersion="30" />
+9-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml
+10
+11    <!-- Permissions -->
+12    <uses-permission android:name="android.permission.INTERNET" />
+12-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:47:5-67
+12-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:47:22-64
+13    <!-- Camera, Photos, input file -->
+14    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+14-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:49:5-79
+14-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:49:22-77
+15    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+15-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:50:5-81
+15-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:50:22-78
+16    <!-- Geolocation API -->
+17    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+17-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:52:5-81
+17-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:52:22-78
+18    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+18-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:53:5-79
+18-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:53:22-76
+19
+20    <uses-feature android:name="android.hardware.location.gps" />
+20-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:54:5-66
+20-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:54:19-63
+21    <!-- Network API -->
+22    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+22-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:56:5-79
+22-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:56:22-76
+23    <!-- Navigator.getUserMedia -->
+24    <!-- Video -->
+25    <uses-permission android:name="android.permission.CAMERA" />
+25-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:59:5-65
+25-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:59:22-62
+26    <!-- Audio -->
+27    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+27-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:61:5-71
+27-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:61:22-68
+28    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+28-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:62:5-79
+28-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:62:22-77
+29
+30    <uses-feature
+30-->[:capacitor-android] E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\node_modules\@capacitor\android\capacitor\build\intermediates\library_manifest\debug\AndroidManifest.xml:11:5-13:36
+31        android:name="android.hardware.camera"
+31-->[:capacitor-android] E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\node_modules\@capacitor\android\capacitor\build\intermediates\library_manifest\debug\AndroidManifest.xml:12:9-47
+32        android:required="false" />
+32-->[:capacitor-android] E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\node_modules\@capacitor\android\capacitor\build\intermediates\library_manifest\debug\AndroidManifest.xml:13:9-33
+33
+34    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+34-->[:capacitor-android] E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\node_modules\@capacitor\android\capacitor\build\intermediates\library_manifest\debug\AndroidManifest.xml:15:5-81
+34-->[:capacitor-android] E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\node_modules\@capacitor\android\capacitor\build\intermediates\library_manifest\debug\AndroidManifest.xml:15:22-78
+35    <uses-permission android:name="android.permission.WAKE_LOCK" /> <!-- Required by older versions of Google Play services to create IID tokens -->
+35-->[:capacitor-android] E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\node_modules\@capacitor\android\capacitor\build\intermediates\library_manifest\debug\AndroidManifest.xml:16:5-68
+35-->[:capacitor-android] E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\node_modules\@capacitor\android\capacitor\build\intermediates\library_manifest\debug\AndroidManifest.xml:16:22-65
+36    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+36-->[com.google.firebase:firebase-iid:20.1.1] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\65f174b01524df0d4bd637d7360a2e28\jetified-firebase-iid-20.1.1\AndroidManifest.xml:26:5-82
+36-->[com.google.firebase:firebase-iid:20.1.1] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\65f174b01524df0d4bd637d7360a2e28\jetified-firebase-iid-20.1.1\AndroidManifest.xml:26:22-79
+37
+38    <application
+38-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:5:5-44:19
+39        android:allowBackup="true"
+39-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:7:9-35
+40        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+40-->[androidx.core:core:1.2.0] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\cf23515831a30cf8e0e5ff774beb1451\core-1.2.0\AndroidManifest.xml:24:18-86
+41        android:debuggable="true"
+42        android:extractNativeLibs="false"
+43        android:icon="@mipmap/ic_launcher"
+43-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:8:9-43
+44        android:label="@string/app_name"
+44-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:9:9-41
+45        android:roundIcon="@mipmap/ic_launcher_round"
+45-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:10:9-54
+46        android:supportsRtl="true"
+46-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:11:9-35
+47        android:testOnly="true"
+48        android:theme="@style/AppTheme"
+48-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:12:9-40
+49        android:usesCleartextTraffic="true" >
+49-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:6:9-44
+50        <activity
+50-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:14:9-33:20
+51            android:name="io.ionic.starter.MainActivity"
+51-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:16:13-57
+52            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode"
+52-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:15:13-129
+53            android:label="@string/title_activity_main"
+53-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:17:13-56
+54            android:launchMode="singleTask"
+54-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:19:13-44
+55            android:theme="@style/AppTheme.NoActionBarLaunch" >
+55-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:18:13-62
+56            <intent-filter>
+56-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:21:13-24:29
+57                <action android:name="android.intent.action.MAIN" />
+57-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:22:17-69
+57-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:22:25-66
+58
+59                <category android:name="android.intent.category.LAUNCHER" />
+59-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:23:17-77
+59-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:23:27-74
+60            </intent-filter>
+61            <intent-filter>
+61-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:26:13-31:29
+62                <action android:name="android.intent.action.VIEW" />
+62-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:27:17-69
+62-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:27:25-66
+63
+64                <category android:name="android.intent.category.DEFAULT" />
+64-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:28:17-76
+64-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:28:27-73
+65                <category android:name="android.intent.category.BROWSABLE" />
+65-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:29:17-78
+65-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:29:27-75
+66
+67                <data android:scheme="@string/custom_url_scheme" />
+67-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:30:17-68
+67-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:30:23-65
+68            </intent-filter>
+69        </activity>
+70
+71        <provider
+72            android:name="androidx.core.content.FileProvider"
+72-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:36:13-62
+73            android:authorities="io.ionic.starter.fileprovider"
+73-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:37:13-64
+74            android:exported="false"
+74-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:38:13-37
+75            android:grantUriPermissions="true" >
+75-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:39:13-47
+76            <meta-data
+76-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:40:13-42:54
+77                android:name="android.support.FILE_PROVIDER_PATHS"
+77-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:41:17-67
+78                android:resource="@xml/file_paths" />
+78-->E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\android\app\src\main\AndroidManifest.xml:42:17-51
+79        </provider>
+80
+81        <service
+81-->[:capacitor-android] E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\node_modules\@capacitor\android\capacitor\build\intermediates\library_manifest\debug\AndroidManifest.xml:19:9-21:40
+82            android:name="com.getcapacitor.plugin.background.BackgroundTaskService"
+82-->[:capacitor-android] E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\node_modules\@capacitor\android\capacitor\build\intermediates\library_manifest\debug\AndroidManifest.xml:20:13-84
+83            android:exported="false" />
+83-->[:capacitor-android] E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\node_modules\@capacitor\android\capacitor\build\intermediates\library_manifest\debug\AndroidManifest.xml:21:13-37
+84
+85        <receiver android:name="com.getcapacitor.plugin.notification.TimedNotificationPublisher" />
+85-->[:capacitor-android] E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\node_modules\@capacitor\android\capacitor\build\intermediates\library_manifest\debug\AndroidManifest.xml:23:9-100
+85-->[:capacitor-android] E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\node_modules\@capacitor\android\capacitor\build\intermediates\library_manifest\debug\AndroidManifest.xml:23:19-97
+86        <receiver android:name="com.getcapacitor.plugin.notification.NotificationDismissReceiver" />
+86-->[:capacitor-android] E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\node_modules\@capacitor\android\capacitor\build\intermediates\library_manifest\debug\AndroidManifest.xml:24:9-101
+86-->[:capacitor-android] E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\node_modules\@capacitor\android\capacitor\build\intermediates\library_manifest\debug\AndroidManifest.xml:24:19-98
+87
+88        <meta-data
+88-->[:capacitor-android] E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\node_modules\@capacitor\android\capacitor\build\intermediates\library_manifest\debug\AndroidManifest.xml:26:9-28:37
+89            android:name="firebase_messaging_auto_init_enabled"
+89-->[:capacitor-android] E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\node_modules\@capacitor\android\capacitor\build\intermediates\library_manifest\debug\AndroidManifest.xml:27:13-64
+90            android:value="false" />
+90-->[:capacitor-android] E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\node_modules\@capacitor\android\capacitor\build\intermediates\library_manifest\debug\AndroidManifest.xml:28:13-34
+91
+92        <service
+92-->[:capacitor-android] E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\node_modules\@capacitor\android\capacitor\build\intermediates\library_manifest\debug\AndroidManifest.xml:30:9-36:19
+93            android:name="com.getcapacitor.CapacitorFirebaseMessagingService"
+93-->[:capacitor-android] E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\node_modules\@capacitor\android\capacitor\build\intermediates\library_manifest\debug\AndroidManifest.xml:31:13-78
+94            android:stopWithTask="false" >
+94-->[:capacitor-android] E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\node_modules\@capacitor\android\capacitor\build\intermediates\library_manifest\debug\AndroidManifest.xml:32:13-41
+95            <intent-filter>
+95-->[:capacitor-android] E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\node_modules\@capacitor\android\capacitor\build\intermediates\library_manifest\debug\AndroidManifest.xml:33:13-35:29
+96                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+96-->[:capacitor-android] E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\node_modules\@capacitor\android\capacitor\build\intermediates\library_manifest\debug\AndroidManifest.xml:34:17-78
+96-->[:capacitor-android] E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\node_modules\@capacitor\android\capacitor\build\intermediates\library_manifest\debug\AndroidManifest.xml:34:25-75
+97            </intent-filter>
+98        </service>
+99
+100        <receiver
+100-->[:capacitor-android] E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\node_modules\@capacitor\android\capacitor\build\intermediates\library_manifest\debug\AndroidManifest.xml:38:9-47:20
+101            android:name="com.getcapacitor.plugin.notification.LocalNotificationRestoreReceiver"
+101-->[:capacitor-android] E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\node_modules\@capacitor\android\capacitor\build\intermediates\library_manifest\debug\AndroidManifest.xml:39:13-97
+102            android:directBootAware="true"
+102-->[:capacitor-android] E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\node_modules\@capacitor\android\capacitor\build\intermediates\library_manifest\debug\AndroidManifest.xml:40:13-43
+103            android:exported="false" >
+103-->[:capacitor-android] E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\node_modules\@capacitor\android\capacitor\build\intermediates\library_manifest\debug\AndroidManifest.xml:41:13-37
+104            <intent-filter>
+104-->[:capacitor-android] E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\node_modules\@capacitor\android\capacitor\build\intermediates\library_manifest\debug\AndroidManifest.xml:42:13-46:29
+105                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+105-->[:capacitor-android] E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\node_modules\@capacitor\android\capacitor\build\intermediates\library_manifest\debug\AndroidManifest.xml:43:17-86
+105-->[:capacitor-android] E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\node_modules\@capacitor\android\capacitor\build\intermediates\library_manifest\debug\AndroidManifest.xml:43:25-83
+106                <action android:name="android.intent.action.BOOT_COMPLETED" />
+106-->[:capacitor-android] E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\node_modules\@capacitor\android\capacitor\build\intermediates\library_manifest\debug\AndroidManifest.xml:44:17-79
+106-->[:capacitor-android] E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\node_modules\@capacitor\android\capacitor\build\intermediates\library_manifest\debug\AndroidManifest.xml:44:25-76
+107                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+107-->[:capacitor-android] E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\node_modules\@capacitor\android\capacitor\build\intermediates\library_manifest\debug\AndroidManifest.xml:45:17-82
+107-->[:capacitor-android] E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\node_modules\@capacitor\android\capacitor\build\intermediates\library_manifest\debug\AndroidManifest.xml:45:25-79
+108            </intent-filter>
+109        </receiver>
+110        <!--
+111             FirebaseMessagingService performs security checks at runtime,
+112             but set to not exported to explicitly avoid allowing another app to call it.
+113        -->
+114        <service
+114-->[com.google.firebase:firebase-messaging:20.1.2] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\9fbada88fa325291a82eb809c2064dc7\jetified-firebase-messaging-20.1.2\AndroidManifest.xml:28:9-34:19
+115            android:name="com.google.firebase.messaging.FirebaseMessagingService"
+115-->[com.google.firebase:firebase-messaging:20.1.2] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\9fbada88fa325291a82eb809c2064dc7\jetified-firebase-messaging-20.1.2\AndroidManifest.xml:29:13-82
+116            android:exported="false" >
+116-->[com.google.firebase:firebase-messaging:20.1.2] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\9fbada88fa325291a82eb809c2064dc7\jetified-firebase-messaging-20.1.2\AndroidManifest.xml:30:13-37
+117            <intent-filter android:priority="-500" >
+117-->[:capacitor-android] E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\node_modules\@capacitor\android\capacitor\build\intermediates\library_manifest\debug\AndroidManifest.xml:33:13-35:29
+118                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+118-->[:capacitor-android] E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\node_modules\@capacitor\android\capacitor\build\intermediates\library_manifest\debug\AndroidManifest.xml:34:17-78
+118-->[:capacitor-android] E:\Anul_III\Sem_I\pdm\Garment\IonicProject\myApp\node_modules\@capacitor\android\capacitor\build\intermediates\library_manifest\debug\AndroidManifest.xml:34:25-75
+119            </intent-filter>
+120        </service>
+121        <service
+121-->[com.google.firebase:firebase-messaging:20.1.2] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\9fbada88fa325291a82eb809c2064dc7\jetified-firebase-messaging-20.1.2\AndroidManifest.xml:35:9-41:19
+122            android:name="com.google.firebase.components.ComponentDiscoveryService"
+122-->[com.google.firebase:firebase-messaging:20.1.2] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\9fbada88fa325291a82eb809c2064dc7\jetified-firebase-messaging-20.1.2\AndroidManifest.xml:36:13-84
+123            android:directBootAware="true"
+123-->[com.google.firebase:firebase-common:19.3.0] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\1b23a58bb1c539c2a19df1b0920c32b5\jetified-firebase-common-19.3.0\AndroidManifest.xml:34:13-43
+124            android:exported="false" >
+124-->[com.google.firebase:firebase-messaging:20.1.2] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\9fbada88fa325291a82eb809c2064dc7\jetified-firebase-messaging-20.1.2\AndroidManifest.xml:37:13-37
+125            <meta-data
+125-->[com.google.firebase:firebase-messaging:20.1.2] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\9fbada88fa325291a82eb809c2064dc7\jetified-firebase-messaging-20.1.2\AndroidManifest.xml:38:13-40:85
+126                android:name="com.google.firebase.components:com.google.firebase.messaging.FirebaseMessagingRegistrar"
+126-->[com.google.firebase:firebase-messaging:20.1.2] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\9fbada88fa325291a82eb809c2064dc7\jetified-firebase-messaging-20.1.2\AndroidManifest.xml:39:17-119
+127                android:value="com.google.firebase.components.ComponentRegistrar" />
+127-->[com.google.firebase:firebase-messaging:20.1.2] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\9fbada88fa325291a82eb809c2064dc7\jetified-firebase-messaging-20.1.2\AndroidManifest.xml:40:17-82
+128            <meta-data
+128-->[com.google.firebase:firebase-datatransport:17.0.3] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\c9fdb49c77a6c560ace392ea2d5303c1\jetified-firebase-datatransport-17.0.3\AndroidManifest.xml:28:13-30:85
+129                android:name="com.google.firebase.components:com.google.firebase.datatransport.TransportRegistrar"
+129-->[com.google.firebase:firebase-datatransport:17.0.3] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\c9fdb49c77a6c560ace392ea2d5303c1\jetified-firebase-datatransport-17.0.3\AndroidManifest.xml:29:17-115
+130                android:value="com.google.firebase.components.ComponentRegistrar" />
+130-->[com.google.firebase:firebase-datatransport:17.0.3] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\c9fdb49c77a6c560ace392ea2d5303c1\jetified-firebase-datatransport-17.0.3\AndroidManifest.xml:30:17-82
+131            <meta-data
+131-->[com.google.firebase:firebase-iid:20.1.1] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\65f174b01524df0d4bd637d7360a2e28\jetified-firebase-iid-20.1.1\AndroidManifest.xml:32:13-34:85
+132                android:name="com.google.firebase.components:com.google.firebase.iid.Registrar"
+132-->[com.google.firebase:firebase-iid:20.1.1] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\65f174b01524df0d4bd637d7360a2e28\jetified-firebase-iid-20.1.1\AndroidManifest.xml:33:17-96
+133                android:value="com.google.firebase.components.ComponentRegistrar" />
+133-->[com.google.firebase:firebase-iid:20.1.1] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\65f174b01524df0d4bd637d7360a2e28\jetified-firebase-iid-20.1.1\AndroidManifest.xml:34:17-82
+134            <meta-data
+134-->[com.google.firebase:firebase-installations:16.0.0] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\1e98b102015e39078d965ca60768118d\jetified-firebase-installations-16.0.0\AndroidManifest.xml:17:13-19:85
+135                android:name="com.google.firebase.components:com.google.firebase.installations.FirebaseInstallationsRegistrar"
+135-->[com.google.firebase:firebase-installations:16.0.0] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\1e98b102015e39078d965ca60768118d\jetified-firebase-installations-16.0.0\AndroidManifest.xml:18:17-127
+136                android:value="com.google.firebase.components.ComponentRegistrar" />
+136-->[com.google.firebase:firebase-installations:16.0.0] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\1e98b102015e39078d965ca60768118d\jetified-firebase-installations-16.0.0\AndroidManifest.xml:19:17-82
+137        </service>
+138
+139        <receiver
+139-->[com.google.firebase:firebase-iid:20.1.1] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\65f174b01524df0d4bd637d7360a2e28\jetified-firebase-iid-20.1.1\AndroidManifest.xml:37:9-44:20
+140            android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver"
+140-->[com.google.firebase:firebase-iid:20.1.1] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\65f174b01524df0d4bd637d7360a2e28\jetified-firebase-iid-20.1.1\AndroidManifest.xml:38:13-78
+141            android:exported="true"
+141-->[com.google.firebase:firebase-iid:20.1.1] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\65f174b01524df0d4bd637d7360a2e28\jetified-firebase-iid-20.1.1\AndroidManifest.xml:39:13-36
+142            android:permission="com.google.android.c2dm.permission.SEND" >
+142-->[com.google.firebase:firebase-iid:20.1.1] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\65f174b01524df0d4bd637d7360a2e28\jetified-firebase-iid-20.1.1\AndroidManifest.xml:40:13-73
+143            <intent-filter>
+143-->[com.google.firebase:firebase-iid:20.1.1] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\65f174b01524df0d4bd637d7360a2e28\jetified-firebase-iid-20.1.1\AndroidManifest.xml:41:13-43:29
+144                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+144-->[com.google.firebase:firebase-iid:20.1.1] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\65f174b01524df0d4bd637d7360a2e28\jetified-firebase-iid-20.1.1\AndroidManifest.xml:42:17-81
+144-->[com.google.firebase:firebase-iid:20.1.1] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\65f174b01524df0d4bd637d7360a2e28\jetified-firebase-iid-20.1.1\AndroidManifest.xml:42:25-78
+145            </intent-filter>
+146        </receiver>
+147
+148        <provider
+148-->[com.google.firebase:firebase-common:19.3.0] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\1b23a58bb1c539c2a19df1b0920c32b5\jetified-firebase-common-19.3.0\AndroidManifest.xml:26:9-30:39
+149            android:name="com.google.firebase.provider.FirebaseInitProvider"
+149-->[com.google.firebase:firebase-common:19.3.0] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\1b23a58bb1c539c2a19df1b0920c32b5\jetified-firebase-common-19.3.0\AndroidManifest.xml:27:13-77
+150            android:authorities="io.ionic.starter.firebaseinitprovider"
+150-->[com.google.firebase:firebase-common:19.3.0] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\1b23a58bb1c539c2a19df1b0920c32b5\jetified-firebase-common-19.3.0\AndroidManifest.xml:28:13-72
+151            android:exported="false"
+151-->[com.google.firebase:firebase-common:19.3.0] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\1b23a58bb1c539c2a19df1b0920c32b5\jetified-firebase-common-19.3.0\AndroidManifest.xml:29:13-37
+152            android:initOrder="100" />
+152-->[com.google.firebase:firebase-common:19.3.0] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\1b23a58bb1c539c2a19df1b0920c32b5\jetified-firebase-common-19.3.0\AndroidManifest.xml:30:13-36
+153
+154        <activity
+154-->[com.google.android.gms:play-services-base:17.0.0] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\38b6c4b545e39be84f8fef63d737cf6b\jetified-play-services-base-17.0.0\AndroidManifest.xml:23:9-26:75
+155            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+155-->[com.google.android.gms:play-services-base:17.0.0] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\38b6c4b545e39be84f8fef63d737cf6b\jetified-play-services-base-17.0.0\AndroidManifest.xml:24:13-79
+156            android:exported="false"
+156-->[com.google.android.gms:play-services-base:17.0.0] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\38b6c4b545e39be84f8fef63d737cf6b\jetified-play-services-base-17.0.0\AndroidManifest.xml:25:13-37
+157            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+157-->[com.google.android.gms:play-services-base:17.0.0] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\38b6c4b545e39be84f8fef63d737cf6b\jetified-play-services-base-17.0.0\AndroidManifest.xml:26:13-72
+158
+159        <meta-data
+159-->[com.google.android.gms:play-services-basement:17.0.0] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\f720b24cc490c109d50c0a0a1e6bf186\jetified-play-services-basement-17.0.0\AndroidManifest.xml:23:9-25:69
+160            android:name="com.google.android.gms.version"
+160-->[com.google.android.gms:play-services-basement:17.0.0] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\f720b24cc490c109d50c0a0a1e6bf186\jetified-play-services-basement-17.0.0\AndroidManifest.xml:24:13-58
+161            android:value="@integer/google_play_services_version" />
+161-->[com.google.android.gms:play-services-basement:17.0.0] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\f720b24cc490c109d50c0a0a1e6bf186\jetified-play-services-basement-17.0.0\AndroidManifest.xml:25:13-66
+162
+163        <service
+163-->[com.google.android.datatransport:transport-backend-cct:2.2.0] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\6b92bf4ad40bcdc58a60097256bb2331\jetified-transport-backend-cct-2.2.0\AndroidManifest.xml:29:9-35:19
+164            android:name="com.google.android.datatransport.runtime.backends.TransportBackendDiscovery"
+164-->[com.google.android.datatransport:transport-backend-cct:2.2.0] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\6b92bf4ad40bcdc58a60097256bb2331\jetified-transport-backend-cct-2.2.0\AndroidManifest.xml:30:13-103
+165            android:exported="false" >
+165-->[com.google.android.datatransport:transport-backend-cct:2.2.0] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\6b92bf4ad40bcdc58a60097256bb2331\jetified-transport-backend-cct-2.2.0\AndroidManifest.xml:31:13-37
+166            <meta-data
+166-->[com.google.android.datatransport:transport-backend-cct:2.2.0] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\6b92bf4ad40bcdc58a60097256bb2331\jetified-transport-backend-cct-2.2.0\AndroidManifest.xml:32:13-34:39
+167                android:name="backend:com.google.android.datatransport.cct.CctBackendFactory"
+167-->[com.google.android.datatransport:transport-backend-cct:2.2.0] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\6b92bf4ad40bcdc58a60097256bb2331\jetified-transport-backend-cct-2.2.0\AndroidManifest.xml:33:17-94
+168                android:value="cct" />
+168-->[com.google.android.datatransport:transport-backend-cct:2.2.0] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\6b92bf4ad40bcdc58a60097256bb2331\jetified-transport-backend-cct-2.2.0\AndroidManifest.xml:34:17-36
+169        </service>
+170        <service
+170-->[com.google.android.datatransport:transport-runtime:2.2.0] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\711d09d774dd8393d1b2cda417cd0cc2\jetified-transport-runtime-2.2.0\AndroidManifest.xml:26:9-30:19
+171            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService"
+171-->[com.google.android.datatransport:transport-runtime:2.2.0] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\711d09d774dd8393d1b2cda417cd0cc2\jetified-transport-runtime-2.2.0\AndroidManifest.xml:27:13-117
+172            android:exported="false"
+172-->[com.google.android.datatransport:transport-runtime:2.2.0] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\711d09d774dd8393d1b2cda417cd0cc2\jetified-transport-runtime-2.2.0\AndroidManifest.xml:28:13-37
+173            android:permission="android.permission.BIND_JOB_SERVICE" >
+173-->[com.google.android.datatransport:transport-runtime:2.2.0] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\711d09d774dd8393d1b2cda417cd0cc2\jetified-transport-runtime-2.2.0\AndroidManifest.xml:29:13-69
+174        </service>
+175
+176        <receiver
+176-->[com.google.android.datatransport:transport-runtime:2.2.0] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\711d09d774dd8393d1b2cda417cd0cc2\jetified-transport-runtime-2.2.0\AndroidManifest.xml:32:9-34:40
+177            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.AlarmManagerSchedulerBroadcastReceiver"
+177-->[com.google.android.datatransport:transport-runtime:2.2.0] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\711d09d774dd8393d1b2cda417cd0cc2\jetified-transport-runtime-2.2.0\AndroidManifest.xml:33:13-132
+178            android:exported="false" />
+178-->[com.google.android.datatransport:transport-runtime:2.2.0] C:\Users\Andreea\.gradle\caches\transforms-2\files-2.1\711d09d774dd8393d1b2cda417cd0cc2\jetified-transport-runtime-2.2.0\AndroidManifest.xml:34:13-37
+179    </application>
+180
+181</manifest>

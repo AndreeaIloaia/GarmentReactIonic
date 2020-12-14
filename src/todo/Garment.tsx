@@ -6,11 +6,14 @@ interface GarmentPropsExt extends GarmentProps {
     onEdit: (_id?: string) => void;
 }
 
-const Garment: React.FC<GarmentPropsExt> = ({_id, name, material, inaltime, latime, descriere, status, onEdit}) => {
+const Garment: React.FC<GarmentPropsExt> = ({_id, name, material, inaltime, latime, descriere, status, versiune, onEdit}) => {
+    let colorStatus = 'primary';
+    if(status === 'Conflict')
+        colorStatus = 'danger';
     return (
         <IonItem onClick={() => onEdit(_id)}>
             <IonLabel>{name}</IonLabel>
-            <IonLabel color="primary" slot="end">
+            <IonLabel color={colorStatus} slot="end">
                 {status !== "empty" && (<small>{status}</small>)}
             </IonLabel>
         </IonItem>

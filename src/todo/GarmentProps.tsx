@@ -6,4 +6,5 @@ export interface GarmentProps {
     latime: string;
     descriere: string;
     status: string;
+    versiune: number;
 }

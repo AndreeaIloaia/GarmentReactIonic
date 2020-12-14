@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import {createGarments, getGarments, newWebSocket, updateGarment} from "./GarmentApi";
 import {AuthContext} from "../auth";
 import {Plugins} from "@capacitor/core";
+import {useNetwork} from "../core/UseNetState";
 // import {useNetwork} from "../core/UseNetState";
 
 const {Storage} = Plugins
@@ -21,6 +22,7 @@ const SAVE_GARMENTS_FAILED = 'SAVE_GARMENTS_FAILED';
 const log = getLogger('GarmentProvider');
 
 type SaveGarmentFn = (garment: GarmentProps, connected: boolean) => Promise<any>;
+type UpdateServerFn = (garment: GarmentProps) => Promise<any>;
 type RefreshFn = () => Promise<any>;
 
 // type SetOfflineBehaviourFn = (garment: GarmentProps) => Promise<any>;
@@ -34,8 +36,7 @@ export interface GarmentState {
     saveGarment?: SaveGarmentFn,
     deleting: boolean,
     refresh?: RefreshFn,
-    conflict?: GarmentProps[],
-    setConflict?: Function,
+    updateServer?: UpdateServerFn,
 }
 
 interface ActionProps {
@@ -104,6 +105,7 @@ export const GarmentProvider: React.FC<GarmentProviderProps> = ({children}) => {
     const {token} = useContext(AuthContext);
     const [state, dispatch] = useReducer(reducer, initialState);
     const {garments, fetching, fetchingError, saving, savingError, deleting} = state;
+    const {networkStatus} = useNetwork();
 
     //const {networkStatus} = useNetwork();
 
@@ -112,6 +114,7 @@ export const GarmentProvider: React.FC<GarmentProviderProps> = ({children}) => {
 
     //const connectionNetwork = networkStatus.connected;
     const saveGarment = useCallback<SaveGarmentFn>(saveGarmentCallback, [token]);
+    const updateServer = useCallback<UpdateServerFn>(updateServerCallback, [token]);
     const refresh = useCallback<RefreshFn>(refreshCallback, [token]);
 
     const value = {
@@ -157,7 +160,7 @@ export const GarmentProvider: React.FC<GarmentProviderProps> = ({children}) => {
                 return JSON.parse(res.value!);
             });
             if (garment !== null) {
-                if (garment.status !== 'empty') {
+                if (garment.status !== 'empty' && garment.status.indexOf('added') >= 0) {
                     log(garment._id);
                     dispatch({type: DELETE_GARMENT_SUCCEEDED, payload: {garmentID: garment._id}});
 
@@ -176,8 +179,52 @@ export const GarmentProvider: React.FC<GarmentProviderProps> = ({children}) => {
                         value: JSON.stringify(newOne)
                     })
                     log("GARMENT: " + newOne.name + " " + newOne.status);
-                } else {
-                    //TODO - pt update
+                }
+                if (garment.status !== 'empty' && garment.status.indexOf('updated') >= 0) {
+                    log(garment._id);
+                    dispatch({type: DELETE_GARMENT_SUCCEEDED, payload: {garmentID: garment._id}});
+
+                    log('Refresh list with local data');
+                    await Storage.remove({key: `garment${garment._id}`});
+
+                    const old = garment;
+                    old.status = 'empty';
+                    try {
+                        const newOne = await updateGarment(token, old);
+                        dispatch({type: SAVE_GARMENTS_SUCCEEDED, payload: {garment: newOne}});
+
+                        await Storage.set({
+                            key: `garment${newOne._id}`,
+                            value: JSON.stringify(newOne)
+                        })
+                        log("GARMENT: " + newOne.name + " " + newOne.status);
+                    } catch (error) {
+                        if (error.message.indexOf('409')) {
+                            // old.status = 'Conflict';
+                            // dispatch({type: SAVE_GARMENTS_SUCCEEDED, payload: {garment: garment}});
+                            //
+                            //     await Storage.set({
+                            //         key: `garment${garment._id}`,
+                            //         value: JSON.stringify(garment)
+                            //     })
+                            const newOne = await getGarments(token).then((data) => {
+                                for (var el of data) {
+                                    if (el._id === old._id)
+                                        return el
+                                }
+                            });
+                            if (newOne) {
+                                newOne.status = 'Conflict';
+                                old.status = 'Conflict';
+                                dispatch({type: SAVE_GARMENTS_SUCCEEDED, payload: {garment: old}});
+                                await updateGarment(token, newOne);
+                                await Storage.set({
+                                    key: `garment${old._id}`,
+                                    value: JSON.stringify(old)
+                                })
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -243,12 +290,13 @@ export const GarmentProvider: React.FC<GarmentProviderProps> = ({children}) => {
             log('saveGarment failed - use localStorage');
             // dispatch({type: SAVE_GARMENTS_FAILED, payload: {error}});
             if (garment._id) {
-                //msg = "Garment updated locally"
+                console.log("PROVIDER");
+                msg = "Garment updated locally"
                 garment.status = msg;
-                // await Storage.set({
-                //     key: `garment${garment._id}`,
-                //     value: JSON.stringify(garment)
-                // });
+                await Storage.set({
+                    key: `garment${garment._id}`,
+                    value: JSON.stringify(garment)
+                });
             } else {
                 msg = "Garment added locally";
                 garment.status = msg;
@@ -267,8 +315,28 @@ export const GarmentProvider: React.FC<GarmentProviderProps> = ({children}) => {
         }
     }
 
-    function wsEffect() {
+   async function updateServerCallback(garment: GarmentProps) {
+        try {
+            log('updateServer started');
+            dispatch({type: SAVE_GARMENTS_STARTED});
+            log("ID:" + garment._id);
+            dispatch({type: DELETE_GARMENT_SUCCEEDED, payload: {garmentID: garment._id}});
 
+            const savedGarment = await getGarments(token).then((data) => {
+                for(var el of data) {
+                    if(el._id === garment._id)
+                        return el;
+                }
+            });
+            log('update succeeded');
+            dispatch({type: SAVE_GARMENTS_SUCCEEDED, payload: {garment: savedGarment}});
+        } catch (error) {
+            log('updateServer failed');
+            // dispatch({type: SAVE_GARMENTS_FAILED, payload: {error}});
+        }
+    }
+
+    function wsEffect() {
         let canceled = false;
         log('wsEffect - connecting');
         let closeWebSocket: () => void;
@@ -276,10 +344,10 @@ export const GarmentProvider: React.FC<GarmentProviderProps> = ({children}) => {
             closeWebSocket = newWebSocket(token, message => {
                 if (canceled)
                     return;
-                const {event, payload: garment} = message;
-                log(`ws msg, garment ${event}`);
-                if (event === 'created' || event === 'updated') {
-                    dispatch({type: SAVE_GARMENTS_SUCCEEDED, payload: {garment}});
+                const {type, payload: garment} = message;
+                log(`ws msg, garment ${type}`);
+                if (type === 'created' || type === 'updated') {
+                    //dispatch({type: SAVE_GARMENTS_SUCCEEDED, payload: {garment}});
                 }
             });
         }

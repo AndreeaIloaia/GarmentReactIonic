@@ -29,17 +29,9 @@ const GarmentList: React.FC<RouteComponentProps> = ({history}) => {
     const [filter, setFilter] = useState<string | undefined>(undefined);
     const [position, setPosition] = useState(11);
 
-    const { conflict } = useContext(GarmentContext);
     const { logout } = useContext(AuthContext);
     const { networkStatus } = useNetwork();
 
-    useEffect(conflictEffect, [conflict]);
-
-    function conflictEffect() {
-        if(conflict && conflict.length > 0) {
-            history.push('/conflict');
-        }
-    }
 
     let color;
     if (networkStatus.connected) {
@@ -122,10 +114,10 @@ const GarmentList: React.FC<RouteComponentProps> = ({history}) => {
                     <IonSelectOption value="undefined">no filter</IonSelectOption>
                 </IonSelect>
                 <IonList>
-                    {displayed && displayed.map(({_id, name, material, inaltime, latime, descriere, status}) => {
+                    {displayed && displayed.map(({_id, name, material, inaltime, latime, descriere, status, versiune}) => {
                         return (
                             <Garment key={_id} _id={_id} name={name} material={material} inaltime={inaltime}
-                                     latime={latime} descriere={descriere} status={status}
+                                     latime={latime} descriere={descriere} status={status} versiune={versiune}
                                      onEdit={id => history.push(`/garment/${id}`)}/>
                         );
                     })}

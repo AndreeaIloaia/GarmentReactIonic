@@ -35,6 +35,7 @@ const GarmentEdit: React.FC<GarmentEditProps> = ({history, match}) => {
     const [descriere, setDescriere] = useState('');
     const [status, setStatus] = useState('empty');
     const [versiune, setVersiune] = useState(0);
+    const [lastModified, setLastModified] = useState(new Date());
     const [showModal, setShowModal] = useState(false);
     const [otherDevice, setDevice] = useState(false);
     // const [status, setStatus] = useState('');
@@ -56,6 +57,7 @@ const GarmentEdit: React.FC<GarmentEditProps> = ({history, match}) => {
             setDescriere(garment.descriere);
             setVersiune(garment.versiune);
             setStatus(garment.status);
+            setLastModified(garment.lastModified);
             if (status === 'Conflict')
                 setShowModal(true);
             log("STATUS: " + status);
@@ -77,8 +79,9 @@ const GarmentEdit: React.FC<GarmentEditProps> = ({history, match}) => {
             latime,
             descriere,
             status: "empty",
-            versiune: versiune + 1
-        } : {name, material, inaltime, latime, descriere, status: "empty", versiune: versiune + 1};
+            versiune: versiune + 1,
+            lastModified
+        } : {name, material, inaltime, latime, descriere, status: "empty", versiune: versiune + 1, lastModified};
         saveGarment && saveGarment(editedGer, networkStatus.connected).then(() => history.goBack());
     };
 
@@ -93,8 +96,9 @@ const GarmentEdit: React.FC<GarmentEditProps> = ({history, match}) => {
             latime,
             descriere,
             status: "empty",
-            versiune: versiune + 1
-        } : {name, material, inaltime, latime, descriere, status: "empty", versiune: versiune + 1};
+            versiune: versiune + 1,
+            lastModified
+        } : {name, material, inaltime, latime, descriere, status: "empty", versiune: versiune + 1, lastModified};
         saveGarment && saveGarment(editedGer, true).then(() => {
             history.push('/garments');
             history.go(0);

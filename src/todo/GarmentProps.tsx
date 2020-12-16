@@ -7,4 +7,5 @@ export interface GarmentProps {
     descriere: string;
     status: string;
     versiune: number;
+    lastModified: Date;
 }

@@ -114,11 +114,11 @@ const GarmentList: React.FC<RouteComponentProps> = ({history}) => {
                     <IonSelectOption value="undefined">no filter</IonSelectOption>
                 </IonSelect>
                 <IonList>
-                    {displayed && displayed.map(({_id, name, material, inaltime, latime, descriere, status, versiune}) => {
+                    {displayed && displayed.map(({_id, name, material, inaltime, latime, descriere, status, versiune, lastModified}) => {
                         return (
                             <Garment key={_id} _id={_id} name={name} material={material} inaltime={inaltime}
                                      latime={latime} descriere={descriere} status={status} versiune={versiune}
-                                     onEdit={id => history.push(`/garment/${id}`)}/>
+                                     lastModified={lastModified} onEdit={id => history.push(`/garment/${id}`)}/>
                         );
                     })}
                 </IonList>

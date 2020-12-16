@@ -42,10 +42,11 @@ const Tab2: React.FC<RouteComponentProps> = ({history}) => {
                     }>
                 </IonSearchbar>
                 <IonList>
-                    {displayed.map(({_id, name, material, inaltime, latime, descriere, status, versiune}) => {
+                    {displayed.map(({_id, name, material, inaltime, latime, descriere, status, versiune, lastModified}) => {
                         return (
                             <Garment key={_id} _id={_id} name={name} material={material} inaltime={inaltime}
-                                     latime={latime} descriere={descriere} status={status} versiune={versiune} onEdit={id => {}}/>
+                                     latime={latime} descriere={descriere} status={status} versiune={versiune}
+                                     lastModified={lastModified} onEdit={id => {}}/>
                         );
                     })}
                 </IonList>

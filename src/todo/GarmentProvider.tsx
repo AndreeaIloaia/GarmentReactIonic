@@ -1,8 +1,8 @@
-import {getLogger} from "../core";
+import {authConfig, getLogger} from "../core";
 import {GarmentProps} from "./GarmentProps";
 import React, {useCallback, useContext, useEffect, useReducer} from "react";
 import PropTypes from 'prop-types';
-import {createGarments, getGarments, newWebSocket, updateGarment} from "./GarmentApi";
+import {createGarments, getGarments, newWebSocket, setIfModifiedSinceHeader, updateGarment} from "./GarmentApi";
 import {AuthContext} from "../auth";
 import {Plugins} from "@capacitor/core";
 import {useNetwork} from "../core/UseNetState";
@@ -245,6 +245,23 @@ export const GarmentProvider: React.FC<GarmentProviderProps> = ({children}) => {
             try {
                 log('fetchGarments started');
                 dispatch({type: FETCH_GARMENTS_STARTED});
+
+                const myKeys = Storage.keys();
+
+                let localGarments = await myKeys.then(function (myKeys) {
+                    const arr = [];
+
+                    for (let i = 0; i < myKeys.keys.length; i++) {
+                        if (myKeys.keys[i].valueOf().includes('garment')) {
+                            const item = Storage.get({key: myKeys.keys[i]});
+                            arr.push(item);
+                            // Storage.remove({key: myKeys.keys[i]});
+                        }
+                    }
+                    return arr;
+                });
+                //setIfModifiedSinceHeader(localGarments, authConfig(token));
+
                 const garments = await getGarments(token);
                 log('fetchingGarments succeede');
                 if (!canceled) {
@@ -252,6 +269,7 @@ export const GarmentProvider: React.FC<GarmentProviderProps> = ({children}) => {
                     dispatch({type: FETCH_GARMENTS_SUCCEEDED, payload: {garments}});
                 }
             } catch (error) {
+                log(error.message);
                 //daca ajunge aici inseamna ca nu a putut sa ia elementele de pe server
                 const myKeys = Storage.keys();
 

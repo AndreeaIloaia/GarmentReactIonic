@@ -11,6 +11,7 @@ const garmentUrl = `http://${baseUrl}/api/garments`;
 
 export const getGarments: (token: string) => Promise<GarmentProps[]> = (token) => {
     var res = axios.get(garmentUrl, authConfig(token));
+
     res.then(function (res) {
         res.data.forEach(
             (async (garment: GarmentProps) => {
@@ -48,6 +49,22 @@ export const updateGarment: (token: string, garment: GarmentProps) => Promise<Ga
             console.log(error);
         });
     return withLogs(res, "updateGarment");
+}
+
+export const setIfModifiedSinceHeader = (garments: GarmentProps[], config: any) =>  {
+    if(garments.length === 0)
+        return;
+
+    let ifModifiedSince = new Date(garments[0].lastModified);
+    for (var garment of garments) {
+        const dateMod = new Date(garment.lastModified);
+        if(dateMod > ifModifiedSince) {
+            ifModifiedSince = dateMod;
+        }
+    }
+    const seconds = ifModifiedSince.getSeconds();
+    ifModifiedSince.setSeconds(seconds + 1);
+    config.headers['if-modified-since'] = ifModifiedSince.toUTCString();
 }
 
 

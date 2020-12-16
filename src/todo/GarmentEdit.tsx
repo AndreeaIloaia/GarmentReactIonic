@@ -38,8 +38,8 @@ const GarmentEdit: React.FC<GarmentEditProps> = ({history, match}) => {
     // const myLocation = useMyLocation();
     // const {latitude: latitudine, longitude: longitudine} = myLocation.position?.coords || {}
 
-    const [longitudine, setLng] = useState(46.77860956692572);
-    const [latitudine, setLat] = useState(23.613781929016113);
+    const [longitudine, setLng] = useState(23.613781929016113);
+    const [latitudine, setLat] = useState(46.77860956692572);
 
     const [garment, setGarment] = useState<GarmentProps>();
     const routeId = match.params.id || '';
@@ -124,20 +124,14 @@ const GarmentEdit: React.FC<GarmentEditProps> = ({history, match}) => {
                     <IonInput class="inputs" placeholder="Descriere" value={descriere}
                               onIonChange={e => setDescriere(e.detail.value || '')}/>
                 </IonItem>
+                {photo && <IonItem>
+                    <IonImg src={photo}/>
+                </IonItem>}
+
                 <IonLoading isOpen={saving}/>
                 {savingError && (
                     <div>{savingError.message || 'Failed to save this garment...'}</div>
                 )}
-                <IonGrid>
-                    <IonRow>
-                        {photos.map((photo, index) => (
-                            photo.filepath.split('-')[1].split('.')[0] === routeId &&
-                            <IonCol size="6" key={index}>
-                                <IonImg src={photo.webviewPath}/>
-                            </IonCol>
-                        ))}
-                    </IonRow>
-                </IonGrid>
                 <MyMap
                     lat={latitudine}
                     lng={longitudine}
@@ -159,10 +153,10 @@ const GarmentEdit: React.FC<GarmentEditProps> = ({history, match}) => {
                         });
                     }}>
                         <IonIcon icon={camera}/>
-                        </IonFabButton>
-                        </IonFab>
-                        </IonContent>
-                        </IonPage>
-                        );
-                        };
-                        export default GarmentEdit;
+                    </IonFabButton>
+                </IonFab>
+            </IonContent>
+        </IonPage>
+    );
+};
+export default GarmentEdit;

@@ -11,6 +11,7 @@ const garmentUrl = `http://${baseUrl}/api/garments`;
 
 export const getGarments: (token: string) => Promise<GarmentProps[]> = (token) => {
     var res = axios.get(garmentUrl, authConfig(token));
+
     res.then(function (res) {
         res.data.forEach(
             (async (garment: GarmentProps) => {
@@ -35,7 +36,7 @@ export const createGarments: (token: string, garment: GarmentProps) => Promise<G
 }
 
 
-export const updateGarment: (token: string, garment: GarmentProps) => Promise<GarmentProps[]> = (token, garment) => {
+export const updateGarment: (token: string, garment: GarmentProps) => Promise<GarmentProps> = (token, garment) => {
     var res = axios.put(`${garmentUrl}/${garment._id}`, garment, authConfig(token));
     res
         .then(async function (res) {
@@ -50,9 +51,25 @@ export const updateGarment: (token: string, garment: GarmentProps) => Promise<Ga
     return withLogs(res, "updateGarment");
 }
 
+export const setIfModifiedSinceHeader = (garments: GarmentProps[], config: any) =>  {
+    if(garments.length === 0)
+        return;
+
+    let ifModifiedSince = new Date(garments[0].lastModified);
+    for (var garment of garments) {
+        const dateMod = new Date(garment.lastModified);
+        if(dateMod > ifModifiedSince) {
+            ifModifiedSince = dateMod;
+        }
+    }
+    const seconds = ifModifiedSince.getSeconds();
+    ifModifiedSince.setSeconds(seconds + 1);
+    config.headers['if-modified-since'] = ifModifiedSince.toUTCString();
+}
+
 
 interface MessageData {
-    event: string;
+    type: string;
     payload: GarmentProps;
 }
 
@@ -71,15 +88,16 @@ export const newWebSocket = (token: string, onMessage: (data: MessageData) => vo
         log('web socket onerror', error);
     };
     ws.onmessage = messageEvent => {
-        log('web socket onmessage');
-        const data: MessageData = JSON.parse(messageEvent.data);
-        const {event, payload: item} = data;
-        if (event === 'created' || event === 'updated') {
-            //save
-            console.log(item._id);
-            console.log("Ar trebui salvate local");
-        }
-        onMessage(data);
+        log('web socket onmessage' + messageEvent.data);
+        onMessage(JSON.parse(messageEvent.data));
+        // const data: MessageData = JSON.parse(messageEvent.data);
+        // const {type, payload: item} = data;
+        // if (type === 'created' || type === 'updated') {
+        //     //save
+        //     console.log(item._id);
+        //     console.log("Ar trebui salvate local");
+        // }
+        // onMessage(data);
     };
     return () => {
         ws.close();

@@ -1,7 +1,6 @@
 import {
     IonContent, IonFab, IonFabButton,
     IonHeader, IonIcon,
-    IonList,
     IonPage, IonSearchbar,
     IonTitle,
     IonToolbar,
@@ -10,10 +9,10 @@ import React, {useContext, useEffect, useState} from 'react';
 import {GarmentContext} from "../todo/GarmentProvider";
 import {GarmentProps} from "../todo/GarmentProps";
 import {RouteComponentProps} from "react-router";
-import Garment from "../todo/Garment";
 import {arrowBack} from "ionicons/icons";
 import {MyMap} from "../components/MyMap";
 import {log} from "util";
+import {useNetwork} from "../core/UseNetState";
 
 
 const Tab3: React.FC<RouteComponentProps> = ({history}) => {
@@ -22,10 +21,11 @@ const Tab3: React.FC<RouteComponentProps> = ({history}) => {
     const [searchName, setSearchName] = useState<string>('');
     const [longitudine, setLng] = useState(23.613781929016113);
     const [latitudine, setLat] = useState(46.77860956692572);
+    const {networkStatus} = useNetwork();
 
     useEffect(() => {
         if (garments?.length) {
-            setDisplayed(garments.filter(obj => obj.name.indexOf(searchName) == 0));
+            setDisplayed(garments.filter(obj => obj.name.indexOf(searchName) === 0));
             const item = displayed[0];
             if(item) {
                 console.log(item.name);
@@ -52,7 +52,7 @@ const Tab3: React.FC<RouteComponentProps> = ({history}) => {
                     }>
                 </IonSearchbar>
 
-                <MyMap
+                {networkStatus.connected && <MyMap
                     lat={latitudine}
                     lng={longitudine}
                     onMapClick={(location: any) => {
@@ -61,7 +61,7 @@ const Tab3: React.FC<RouteComponentProps> = ({history}) => {
                         console.log("COORDONATE: " + location.latLng.lng() + " SI " + location.latLng.lat());
                     }}
                     onMarkerClick={log('onMarker')}
-                />
+                />}
 
                 {fetchingError && (<div>{fetchingError.message || 'Failed to fetch garments'}</div>)}
                 <IonFab vertical="bottom" horizontal="end" slot="fixed">

@@ -5,6 +5,9 @@ export interface GarmentProps {
     inaltime: string;
     latime: string;
     descriere: string;
+    status: string;
+    versiune: number;
+    lastModified: Date;
     longitudine: number;
     latitudine: number;
     photo: string;

@@ -1,6 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Redirect, RouteComponentProps} from 'react-router';
 import {
+    createAnimation,
     IonButton,
     IonContent,
     IonFab,
@@ -19,51 +20,62 @@ import Garment from './Garment'
 import {AuthContext} from "../auth";
 import {GarmentProps} from "./GarmentProps";
 import {useNetwork} from "../core/UseNetState";
-import {useAppState} from "../core/UseAppStatus";
+import {InfoModal} from "../components/MyModal";
 
 const log = getLogger('GarmentList');
 
 const GarmentList: React.FC<RouteComponentProps> = ({history}) => {
-    const {garments, fetching, fetchingError} = useContext(GarmentContext);
+    const {garments, fetching, fetchingError, refresh} = useContext(GarmentContext);
     const [disableInfiniteScroll, setDisableInfiniteScroll] = useState<boolean>(false);
     const [displayed, setDisplayed] = useState<GarmentProps[]>([]);
     const [filter, setFilter] = useState<string | undefined>(undefined);
-    const [position, setPosition] = useState(8);
-    const { logout } = useContext(AuthContext);
-    const { networkStatus } = useNetwork();
-    const { appState } = useAppState();
+    const [position, setPosition] = useState(11);
 
-    let color, msg;
-    if(networkStatus.connected) {
+    const {logout} = useContext(AuthContext);
+    const {networkStatus} = useNetwork();
+
+
+    let color;
+    if (networkStatus.connected) {
         color = 'primary';
-        msg = 'online';
-    }
-    else {
+        // msg = 'online';
+    } else {
         color = 'dark';
-        msg = 'offline';
+        // msg = 'offline';
     }
+
+    useEffect(basicAnimation, []);
 
     useEffect(() => {
-        if(garments?.length)
-            setDisplayed(garments?.slice(0, 8));
+        log("AICI GARMENT LIST CONNECTION: " + networkStatus.connected);
+        if (networkStatus.connected) {
+            refresh && refresh();
+        }
+    }, [networkStatus.connected]);
+
+
+    useEffect(() => {
+        if (garments?.length)
+            setDisplayed(garments?.slice(0, 11));
     }, [garments]);
 
     useEffect(() => {
-        if(garments && filter) {
+        if (garments && filter) {
             console.log(filter);
-            if(filter !== "undefined")
+            if (filter !== "undefined")
                 setDisplayed(garments.filter(obj => obj.material === filter));
             else
                 // setDisplayed(garments);
                 setDisplayed(garments?.slice(0, 6));
         }
-    // }, [filter, displayed]);
-    }, [filter]);
+        // }, [filter, displayed]);
+        // }, [filter]);
+    }, [filter, garments]);
     log('render');
 
     async function searchNext($event: CustomEvent<void>) {
-        if(garments && position < garments.length) {
-            if(filter)
+        if (garments && position < garments.length) {
+            if (filter)
                 console.log(filter);
             setDisplayed([...displayed, ...garments.slice(position, position + 3)]);
             setPosition(position + 3);
@@ -74,41 +86,60 @@ const GarmentList: React.FC<RouteComponentProps> = ({history}) => {
         ($event.target as HTMLIonInfiniteScrollElement).complete();
     }
 
+    function basicAnimation() {
+        const elem = document.querySelector('.basic-animation');
+        if (elem) {
+            const animation = createAnimation()
+                .addElement(elem)
+                .duration(3000)
+                .iterations(Infinity)
+                .keyframes([
+                    {offset: 0, transform: 'scale(1)', opacity: '1'},
+                    {offset: 0.5, transform: 'scale(1.1)', opacity: '0.5'},
+                    {offset: 1, transform: 'scale(1)', opacity: '1'}
+                ]);
+            animation.play()
+        }
+    }
+
     const handleLogout = () => {
         logout?.();
-        return <Redirect to={{ pathname: "/login" }} />;
+        return <Redirect to={{pathname: "/login"}}/>;
     }
     return (
         <IonPage>
             <IonHeader>
                 <IonToolbar>
-                    <IonTitle>My Tailor App</IonTitle>
-
-                    <IonButton className="logout-button" onClick={handleLogout} slot="end" expand="block" fill="solid" color="primary">
+                    <IonTitle className='basic-animation'>My Tailor App</IonTitle>
+                    <IonButton className="logout-button" onClick={handleLogout} slot="end" expand="block" fill="solid"
+                               color="primary">
                         Logout
                     </IonButton>
+                    <div>
+                        <InfoModal/>
+                    </div>
+
                 </IonToolbar>
                 <IonToolbar color={color}>
-                    <IonTitle>Network connection: {msg}</IonTitle>
+                    <IonTitle>Network connection: {networkStatus.connected ? "online" : "offline"}</IonTitle>
 
                 </IonToolbar>
             </IonHeader>
             <IonContent>
                 <IonLoading isOpen={fetching} message={"Fetching garments"}/>
                 <IonSelect value={filter} placeholder="Select Material" onIonChange={e => {
-                        setFilter(e.detail.value);
-                    //filterGarment(e.detail.value);
+                    setFilter(e.detail.value);
                 }}>
-                    {/*{materials.map(material => <IonSelectOption key={material} value={material}>{material}</IonSelectOption>)}*/}
-                    <IonSelectOption value="matase" >matase</IonSelectOption>
-                    <IonSelectOption value="triplu voal" >triplu voal</IonSelectOption>
-                    <IonSelectOption value="undefined" >no filter</IonSelectOption>
+                    <IonSelectOption value="matase">matase</IonSelectOption>
+                    <IonSelectOption value="triplu voal">triplu voal</IonSelectOption>
+                    <IonSelectOption value="undefined">no filter</IonSelectOption>
                 </IonSelect>
                 <IonList>
-                    {displayed && displayed.map(({_id, name, material, inaltime, latime, descriere, longitudine, latitudine, photo}) =>{
+                    {displayed && displayed.map(({_id, name, material, inaltime, latime, descriere, status, versiune, lastModified, longitudine, latitudine, photo}) => {
                         return (
                             <Garment key={_id} _id={_id} name={name} material={material} inaltime={inaltime}
-                                     latime={latime} descriere={descriere} longitudine={longitudine} latitudine={latitudine}
+                                     latime={latime} descriere={descriere} status={status} versiune={versiune}
+                                     lastModified={lastModified} longitudine={longitudine} latitudine={latitudine}
                                      photo={photo} onEdit={id => history.push(`/garment/${id}`)}/>
                         );
                     })}

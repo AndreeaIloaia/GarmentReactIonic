@@ -111,6 +111,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
                 }
                 log('auth succeeded');
 
+                await Storage.set({
+                    key: 'token',
+                    value: token
+                });
+
                 setState({
                     ...state,
                     token,

@@ -25,6 +25,7 @@ import {AuthProvider, Login, PrivateRoute} from "./auth";
 import {GarmentProvider} from "./todo/GarmentProvider";
 import {GarmentEdit, GarmentList} from "./todo";
 import Tab2 from "./pages/Tab2";
+import Tab3 from "./pages/Tab3";
 
 const App: React.FC = () => (
     <IonApp>
@@ -37,6 +38,7 @@ const App: React.FC = () => (
                         <PrivateRoute component={GarmentEdit} path="/garment" exact={true}/>
                         <PrivateRoute component={GarmentEdit} path="/garment/:id" exact={true}/>
                         <PrivateRoute component={Tab2} path="/tab2" exact={true}/>
+                        <PrivateRoute component={Tab3} path="/tab3" exact={true}/>
                     </GarmentProvider>
                     <Route exact path="/" render={() => <Redirect to="/garments"/>}/>
                 </AuthProvider>

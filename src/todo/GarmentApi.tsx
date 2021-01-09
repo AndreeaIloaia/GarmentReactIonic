@@ -11,7 +11,6 @@ const garmentUrl = `http://${baseUrl}/api/garments`;
 
 export const getGarments: (token: string) => Promise<GarmentProps[]> = (token) => {
     var res = axios.get(garmentUrl, authConfig(token));
-
     res.then(function (res) {
         res.data.forEach(
             (async (garment: GarmentProps) => {
@@ -51,14 +50,14 @@ export const updateGarment: (token: string, garment: GarmentProps) => Promise<Ga
     return withLogs(res, "updateGarment");
 }
 
-export const setIfModifiedSinceHeader = (garments: GarmentProps[], config: any) =>  {
-    if(garments.length === 0)
+export const setIfModifiedSinceHeader = (garments: GarmentProps[], config: any) => {
+    if (garments.length === 0)
         return;
 
     let ifModifiedSince = new Date(garments[0].lastModified);
     for (var garment of garments) {
         const dateMod = new Date(garment.lastModified);
-        if(dateMod > ifModifiedSince) {
+        if (dateMod > ifModifiedSince) {
             ifModifiedSince = dateMod;
         }
     }
@@ -91,13 +90,17 @@ export const newWebSocket = (token: string, onMessage: (data: MessageData) => vo
         log('web socket onmessage' + messageEvent.data);
         onMessage(JSON.parse(messageEvent.data));
         // const data: MessageData = JSON.parse(messageEvent.data);
-        // const {type, payload: item} = data;
+        // const type = messageEvent.data;
+        // const payload = messageEvent.data.payload;
+        //
+        // console.log("TYPE: " + type);
+        // console.log("Payload: " + payload);
         // if (type === 'created' || type === 'updated') {
-        //     //save
-        //     console.log(item._id);
-        //     console.log("Ar trebui salvate local");
+            //save
+            // console.log(item._id);
+            // console.log("Ar trebui salvate local");
         // }
-        // onMessage(data);
+        // onMessage(JSON.parse(messageEvent.data));
     };
     return () => {
         ws.close();

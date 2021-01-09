@@ -8,4 +8,7 @@ export interface GarmentProps {
     status: string;
     versiune: number;
     lastModified: Date;
+    longitudine: number;
+    latitudine: number;
+    photo: string;
 }

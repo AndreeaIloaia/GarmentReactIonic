@@ -1,6 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Redirect, RouteComponentProps} from 'react-router';
 import {
+    createAnimation,
     IonButton,
     IonContent,
     IonFab,
@@ -12,13 +13,14 @@ import {
     IonTitle,
     IonToolbar
 } from '@ionic/react';
-import {add, shirt} from 'ionicons/icons';
+import {add, locate, shirt} from 'ionicons/icons';
 import {getLogger} from '../core';
 import {GarmentContext} from "./GarmentProvider";
 import Garment from './Garment'
 import {AuthContext} from "../auth";
 import {GarmentProps} from "./GarmentProps";
 import {useNetwork} from "../core/UseNetState";
+import {InfoModal} from "../components/MyModal";
 
 const log = getLogger('GarmentList');
 
@@ -29,8 +31,8 @@ const GarmentList: React.FC<RouteComponentProps> = ({history}) => {
     const [filter, setFilter] = useState<string | undefined>(undefined);
     const [position, setPosition] = useState(11);
 
-    const { logout } = useContext(AuthContext);
-    const { networkStatus } = useNetwork();
+    const {logout} = useContext(AuthContext);
+    const {networkStatus} = useNetwork();
 
 
     let color;
@@ -41,6 +43,8 @@ const GarmentList: React.FC<RouteComponentProps> = ({history}) => {
         color = 'dark';
         // msg = 'offline';
     }
+
+    useEffect(basicAnimation, []);
 
     useEffect(() => {
         log("AICI GARMENT LIST CONNECTION: " + networkStatus.connected);
@@ -82,6 +86,22 @@ const GarmentList: React.FC<RouteComponentProps> = ({history}) => {
         ($event.target as HTMLIonInfiniteScrollElement).complete();
     }
 
+    function basicAnimation() {
+        const elem = document.querySelector('.basic-animation');
+        if (elem) {
+            const animation = createAnimation()
+                .addElement(elem)
+                .duration(3000)
+                .iterations(Infinity)
+                .keyframes([
+                    {offset: 0, transform: 'scale(1)', opacity: '1'},
+                    {offset: 0.5, transform: 'scale(1.1)', opacity: '0.5'},
+                    {offset: 1, transform: 'scale(1)', opacity: '1'}
+                ]);
+            animation.play()
+        }
+    }
+
     const handleLogout = () => {
         logout?.();
         return <Redirect to={{pathname: "/login"}}/>;
@@ -90,11 +110,15 @@ const GarmentList: React.FC<RouteComponentProps> = ({history}) => {
         <IonPage>
             <IonHeader>
                 <IonToolbar>
-                    <IonTitle>My Tailor App</IonTitle>
+                    <IonTitle className='basic-animation'>My Tailor App</IonTitle>
                     <IonButton className="logout-button" onClick={handleLogout} slot="end" expand="block" fill="solid"
                                color="primary">
                         Logout
                     </IonButton>
+                    <div>
+                        <InfoModal/>
+                    </div>
+
                 </IonToolbar>
                 <IonToolbar color={color}>
                     <IonTitle>Network connection: {networkStatus.connected ? "online" : "offline"}</IonTitle>
@@ -102,23 +126,21 @@ const GarmentList: React.FC<RouteComponentProps> = ({history}) => {
                 </IonToolbar>
             </IonHeader>
             <IonContent>
-                {/*<div>App state is {JSON.stringify(appState)}</div>*/}
                 <IonLoading isOpen={fetching} message={"Fetching garments"}/>
                 <IonSelect value={filter} placeholder="Select Material" onIonChange={e => {
                     setFilter(e.detail.value);
-                    //filterGarment(e.detail.value);
                 }}>
-                    {/*{materials.map(material => <IonSelectOption key={material} value={material}>{material}</IonSelectOption>)}*/}
                     <IonSelectOption value="matase">matase</IonSelectOption>
                     <IonSelectOption value="triplu voal">triplu voal</IonSelectOption>
                     <IonSelectOption value="undefined">no filter</IonSelectOption>
                 </IonSelect>
                 <IonList>
-                    {displayed && displayed.map(({_id, name, material, inaltime, latime, descriere, status, versiune, lastModified}) => {
+                    {displayed && displayed.map(({_id, name, material, inaltime, latime, descriere, status, versiune, lastModified, longitudine, latitudine, photo}) => {
                         return (
                             <Garment key={_id} _id={_id} name={name} material={material} inaltime={inaltime}
                                      latime={latime} descriere={descriere} status={status} versiune={versiune}
-                                     lastModified={lastModified} onEdit={id => history.push(`/garment/${id}`)}/>
+                                     lastModified={lastModified} longitudine={longitudine} latitudine={latitudine}
+                                     photo={photo} onEdit={id => history.push(`/garment/${id}`)}/>
                         );
                     })}
                 </IonList>
@@ -137,6 +159,9 @@ const GarmentList: React.FC<RouteComponentProps> = ({history}) => {
                     </IonFabButton>
                     <IonFabButton onClick={() => history.push('/tab2')}>
                         <IonIcon icon={shirt}/>
+                    </IonFabButton>
+                    <IonFabButton onClick={() => history.push('/tab3')}>
+                        <IonIcon icon={locate}/>
                     </IonFabButton>
                 </IonFab>
 

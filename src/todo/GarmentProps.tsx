@@ -10,5 +10,4 @@ export interface GarmentProps {
     lastModified: Date;
     longitudine: number;
     latitudine: number;
-    photo: string;
 }

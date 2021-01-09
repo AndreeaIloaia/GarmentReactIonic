@@ -11,29 +11,30 @@ export interface Photo {
 
 const PHOTO_STORAGE = 'photos';
 
-export function usePhotoGallery() {
+export function usePhotoGallery(id: string) {
     const {getPhoto} = useCamera();
+    const [photo, setPhoto] = useState<Photo>();
     const [photos, setPhotos] = useState<Photo[]>([]);
+    const {readFile, writeFile} = useFilesystem();
 
-    const takePhoto = async (id: string) => {
+
+    const takePhoto = async () => {
         const cameraPhoto = await getPhoto({
             resultType: CameraResultType.Uri,
             source: CameraSource.Camera,
             quality: 100
         });
-        const fileName = new Date().getTime() + '-' + id + '.jpeg';
-        const savedFileImage = await savePicture(cameraPhoto, fileName);
-        const newPhotos = [savedFileImage];
-        // const newPhotos = [savedFileImage, ...photos];
-        setPhotos(newPhotos);
+        const fileName = id + '.jpeg';
+        const newPhoto = await savePicture(cameraPhoto, fileName);
+        setPhoto(newPhoto);
+        const newPhotos = [newPhoto, ...photos];
         set(PHOTO_STORAGE, JSON.stringify(newPhotos));
-        return savedFileImage;
     };
 
-    const {readFile, writeFile} = useFilesystem();
+
     const savePicture = async (photo: CameraPhoto, fileName: string): Promise<Photo> => {
         const base64Data = await base64FromPath(photo.webPath!);
-        const savedFile = await writeFile({
+        await writeFile({
             path: fileName,
             data: base64Data,
             directory: FilesystemDirectory.Data
@@ -50,21 +51,27 @@ export function usePhotoGallery() {
         const loadSaved = async () => {
             const photosString = await get(PHOTO_STORAGE);
             const photos = (photosString ? JSON.parse(photosString) : []) as Photo[];
-            for (let photo of photos) {
+            let newPhoto;
+
+            for (let myPhoto of photos) {
+                if (myPhoto.filepath === id + '.jpeg') {
+                    // ceva = photo;
+                    newPhoto = myPhoto;
+                }
                 const file = await readFile({
-                    path: photo.filepath,
+                    path: myPhoto.filepath,
                     directory: FilesystemDirectory.Data
                 });
-                photo.webviewPath = `data:image/jpeg;base64,${file.data}`;
+                myPhoto.webviewPath = `data:image/jpeg;base64,${file.data}`;
             }
+            setPhoto(newPhoto);
             setPhotos(photos);
         };
         loadSaved();
     }, [get, readFile]);
 
-
     return {
-        photos,
+        photo,
         takePhoto
     };
 }

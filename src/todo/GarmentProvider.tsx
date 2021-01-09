@@ -6,6 +6,7 @@ import {createGarments, getGarments, newWebSocket, setIfModifiedSinceHeader, upd
 import {AuthContext} from "../auth";
 import {Plugins} from "@capacitor/core";
 import {useNetwork} from "../core/UseNetState";
+import {usePhotoGallery} from "../core/UsePhotoGallery";
 // import {useNetwork} from "../core/UseNetState";
 
 const {Storage} = Plugins
@@ -65,8 +66,13 @@ const reducer: (state: GarmentState, action: ActionProps) => GarmentState =
                 const garments = [...(state.garments || [])];
                 log(garments);
                 const garment = payload.garment;
-
-                const index = garments.findIndex((i => i._id === garment._id));
+                let index = -1;
+                for (let i = 0; i < garments.length; i++) {
+                    if(garments[i]._id === garment._id) {
+                        index = i;
+                    }
+                }
+                // const index = garments.findIndex((i => i._id === garment._id));
                 if (index === -1)
                     garments.splice(0, 0, garment);
                 else
@@ -321,7 +327,7 @@ export const GarmentProvider: React.FC<GarmentProviderProps> = ({children}) => {
                     if(networkStatus.connected) {
                         log("GARMENT IN WS: " + garment.name);
                         log("GARMENT IN WS: " + garment._id);
-                        dispatch({type: SAVE_GARMENTS_SUCCEEDED, payload: {garment: garment}});
+                        // dispatch({type: SAVE_GARMENTS_SUCCEEDED, payload: {garment: garment}});
                     }
                 }
             });

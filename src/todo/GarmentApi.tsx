@@ -2,6 +2,7 @@ import axios from 'axios'
 import {getLogger, baseUrl, withLogs, authConfig} from "../core";
 import {GarmentProps} from "./GarmentProps";
 import {Plugins} from "@capacitor/core";
+import {Photo} from "../core/UsePhotoGallery";
 
 const {Storage} = Plugins;
 // const {Network} = Plugins;
@@ -48,6 +49,11 @@ export const updateGarment: (token: string, garment: GarmentProps) => Promise<Ga
             console.log(error);
         });
     return withLogs(res, "updateGarment");
+}
+
+export const savePhoto: (token: string, photo:Photo) => Promise<any> = (token, photo) => {
+    var res = axios.post(`${garmentUrl}/photos`, photo, authConfig(token));
+    return withLogs(res, 'add photo');
 }
 
 export const setIfModifiedSinceHeader = (garments: GarmentProps[], config: any) => {

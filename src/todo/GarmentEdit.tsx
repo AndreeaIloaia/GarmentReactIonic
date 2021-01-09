@@ -15,7 +15,7 @@ import {
 import {GarmentContext} from "./GarmentProvider";
 import {GarmentProps} from "./GarmentProps";
 import {camera} from "ionicons/icons";
-import {usePhotoGallery} from "../core/UsePhotoGallery";
+import {usePhotoGallery, Photo} from "../core/UsePhotoGallery";
 import {MyMap} from "../components/MyMap";
 import {useNetwork} from "../core/UseNetState";
 import {createAnimation} from '@ionic/react';
@@ -38,17 +38,16 @@ const GarmentEdit: React.FC<GarmentEditProps> = ({history, match}) => {
         const [inaltime, setInaltime] = useState('');
         const [latime, setLatime] = useState('');
         const [descriere, setDescriere] = useState('');
-        const [photo, setPhoto] = useState('');
-
-        // const myLocation = useMyLocation();
-        // const {latitude: latitudine, longitude: longitudine} = myLocation.position?.coords || {}
-
+        // const [photo, setPhoto] = useState('');
         const [longitudine, setLng] = useState(23.613781929016113);
         const [latitudine, setLat] = useState(46.77860956692572);
 
         const routeId = match.params.id || '';
-
-        const {takePhoto} = usePhotoGallery();
+        let isImage = true;
+        if (routeId === '') {
+            isImage = false;
+        }
+        const {photo, takePhoto} = usePhotoGallery(routeId);
 
         const [status, setStatus] = useState('empty');
         const [versiune, setVersiune] = useState(0);
@@ -71,7 +70,6 @@ const GarmentEdit: React.FC<GarmentEditProps> = ({history, match}) => {
                 setInaltime(garment.inaltime);
                 setLatime(garment.latime);
                 setDescriere(garment.descriere);
-                setPhoto(garment.photo);
                 setLng(garment.longitudine);
                 setLat(garment.latitudine);
                 setVersiune(garment.versiune);
@@ -82,12 +80,6 @@ const GarmentEdit: React.FC<GarmentEditProps> = ({history, match}) => {
                 log("STATUS: " + status);
             }
         }, [match.params.id, garments, status]);
-        // }, [match.params.id, garments, getGarmentSrv]);
-
-        // useEffect(() => {
-        //     setGarmentNew(firstGarment);
-        // }, [firstGarment]);
-
 
         const handleSave = () => {
             if (name === '' || material === '' || inaltime === '' || latime === '' || descriere === '') {
@@ -105,7 +97,6 @@ const GarmentEdit: React.FC<GarmentEditProps> = ({history, match}) => {
                     lastModified,
                     longitudine,
                     latitudine,
-                    photo
                 } : {
                     name,
                     material,
@@ -117,7 +108,6 @@ const GarmentEdit: React.FC<GarmentEditProps> = ({history, match}) => {
                     lastModified,
                     longitudine,
                     latitudine,
-                    photo
                 };
                 saveGarment && saveGarment(editedGer, networkStatus.connected).then(() => history.goBack());
             }
@@ -309,15 +299,15 @@ const GarmentEdit: React.FC<GarmentEditProps> = ({history, match}) => {
                         {offset: 1, transform: 'scale(1)'}
                     ]);
                 (async () => {
-                    if(name === '')
+                    if (name === '')
                         await animation1.play();
-                    if(material === '')
+                    if (material === '')
                         await animation2.play();
-                    if(inaltime === '')
+                    if (inaltime === '')
                         await animation3.play();
-                    if(latime === '')
+                    if (latime === '')
                         await animation4.play();
-                    if(descriere === '')
+                    if (descriere === '')
                         await animation5.play();
                 })();
             }
@@ -370,15 +360,17 @@ const GarmentEdit: React.FC<GarmentEditProps> = ({history, match}) => {
                         <IonInput class="inputs inputs-5" placeholder="Descriere" value={descriere}
                                   onIonChange={e => setDescriere(e.detail.value || '')}/>
                     </IonItem>
-                    {photo && <IonItem>
-                        <IonImg src={photo}/>
+                    {photo && isImage && <IonItem>
+                        <IonImg src={photo.webviewPath}/>
                     </IonItem>}
 
                     <IonLoading isOpen={saving}/>
                     {savingError && (
                         <div>{savingError.message || 'Failed to save this garment...'}</div>
                     )}
-                    {networkStatus.connected && <MyMap
+
+                    {isImage && networkStatus.connected &&
+                    <MyMap
                         lat={latitudine}
                         lng={longitudine}
                         onMapClick={(location: any) => {
@@ -388,19 +380,16 @@ const GarmentEdit: React.FC<GarmentEditProps> = ({history, match}) => {
                         }}
                         onMarkerClick={log('onMarker')}
                     />}
+                    {isImage &&
                     <IonFab vertical="bottom" horizontal="center" slot="fixed">
                         <IonFabButton onClick={() => {
-                            const newPhoto = takePhoto(routeId);
-                            console.log(newPhoto);
-                            newPhoto.then((i) => {
-                                setPhoto(i.webviewPath!);
-                                console.log(i.webviewPath);
-                                console.log(photo);
-                            });
+                            takePhoto();
+                            isImage = true;
                         }}>
                             <IonIcon icon={camera}/>
                         </IonFabButton>
                     </IonFab>
+                    }
                 </IonContent>
             </IonPage>
         );

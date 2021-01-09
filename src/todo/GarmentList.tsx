@@ -65,11 +65,8 @@ const GarmentList: React.FC<RouteComponentProps> = ({history}) => {
             if (filter !== "undefined")
                 setDisplayed(garments.filter(obj => obj.material === filter));
             else
-                // setDisplayed(garments);
                 setDisplayed(garments?.slice(0, 6));
         }
-        // }, [filter, displayed]);
-        // }, [filter]);
     }, [filter, garments]);
     log('render');
 
@@ -135,12 +132,12 @@ const GarmentList: React.FC<RouteComponentProps> = ({history}) => {
                     <IonSelectOption value="undefined">no filter</IonSelectOption>
                 </IonSelect>
                 <IonList>
-                    {displayed && displayed.map(({_id, name, material, inaltime, latime, descriere, status, versiune, lastModified, longitudine, latitudine, photo}) => {
+                    {displayed && displayed.map(({_id, name, material, inaltime, latime, descriere, status, versiune, lastModified, longitudine, latitudine}) => {
                         return (
                             <Garment key={_id} _id={_id} name={name} material={material} inaltime={inaltime}
                                      latime={latime} descriere={descriere} status={status} versiune={versiune}
                                      lastModified={lastModified} longitudine={longitudine} latitudine={latitudine}
-                                     photo={photo} onEdit={id => history.push(`/garment/${id}`)}/>
+                                     onEdit={id => history.push(`/garment/${id}`)}/>
                         );
                     })}
                 </IonList>
